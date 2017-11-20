@@ -1,0 +1,87 @@
+<!-- BEGIN_INCLUDE(docker:greet) -->
+    <docker:greet config-ref="" friend="#[map-payload:friend]" />
+<!-- END_INCLUDE(docker:greet) -->
+<!-- BEGIN_INCLUDE(docker:docker-info) -->
+    <docker:docker-info config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" />
+<!-- END_INCLUDE(docker:docker-info) -->
+<!-- BEGIN_INCLUDE(docker:build-image) -->
+    <docker:build-image config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" dockerFilePath="C:\Users\Desktop\docker\Dockerfile.txt"/>
+<!-- END_INCLUDE(docker:build-image) -->
+<!-- BEGIN_INCLUDE(docker:list-containers) -->    
+    <docker:list-containers config-ref="Docker__HTTP_Docker_Config"    doc:name="Docker"/>
+<!-- END_INCLUDE(docker:list-containers) -->
+<!-- BEGIN_INCLUDE(docker:create-container) -->
+    <docker:create-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_create_container" imageName="ubuntu"/>
+<!-- END_INCLUDE(docker:create-container) -->
+<!-- BEGIN_INCLUDE(docker:create-volume) -->
+    <docker:create-volume config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" volumeDriver="custom" volumeName="tardis"/>
+<!-- END_INCLUDE(docker:create-volume) -->
+<!-- BEGIN_INCLUDE(docker:delete-container) -->
+    <docker:delete-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:delete-container) -->
+<!-- BEGIN_INCLUDE(docker:get-all-container-stats) -->
+    <docker:get-all-container-stats config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" />
+<!-- END_INCLUDE(docker:get-all-container-stats) -->
+<!-- BEGIN_INCLUDE(docker:get-container-logs) -->
+    <docker:get-container-logs config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:get-container-logs) -->
+<!-- BEGIN_INCLUDE(docker:get-container-stats) -->
+    <docker:get-container-stats config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:get-container-stats) -->
+<!-- BEGIN_INCLUDE(docker:inspect-container) -->
+    <docker:inspect-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:inspect-container) -->
+<!-- BEGIN_INCLUDE(docker:inspect-image) -->
+    <docker:inspect-image config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" imageName="ubuntu"/>
+<!-- END_INCLUDE(docker:inspect-image) -->
+<!-- BEGIN_INCLUDE(docker:inspect-volume) -->
+    <docker:inspect-volume config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" volumeName="tardis"/>
+<!-- END_INCLUDE(docker:inspect-volume) -->
+<!-- BEGIN_INCLUDE(docker:kill-container) -->
+    <docker:kill-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:kill-container) -->
+<!-- BEGIN_INCLUDE(docker:list-image) -->
+    <docker:list-image config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" />
+<!-- END_INCLUDE(docker:list-image) -->
+<!-- BEGIN_INCLUDE(docker:list-volume) -->
+    <docker:list-volume config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" />
+<!-- END_INCLUDE(docker:list-volume) -->
+<!-- BEGIN_INCLUDE(docker:pause-container) -->
+    <docker:pause-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:pause-container) -->
+<!-- BEGIN_INCLUDE(docker:pull-image) -->
+    <docker:pull-image config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" imageName="ubuntu"/>
+<!-- END_INCLUDE(docker:pull-image) -->
+<!-- BEGIN_INCLUDE(docker:remove-image) -->
+    <docker:remove-image config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" imageName="ubuntu" forceRemove="true"/>
+<!-- END_INCLUDE(docker:remove-image) -->
+<!-- BEGIN_INCLUDE(docker:remove-volume) -->
+    <docker:remove-volume config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" volumeName="tardis"/>
+<!-- END_INCLUDE(docker:remove-volume) -->
+<!-- BEGIN_INCLUDE(docker:restart-container) -->
+    <docker:restart-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:restart-container) -->
+<!-- BEGIN_INCLUDE(docker:run-container) -->
+    <docker:run-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container" command="python sample_process.py" imageName="ubuntu"/>
+<!-- END_INCLUDE(docker:run-container) -->
+<!-- BEGIN_INCLUDE(docker:run-container-and-application) -->
+    <docker:run-container-and-application config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container" command="python sample_process.py" imageName="ubuntu" containerBindLocation="/tmp" hostBindLocation="/tmp"/>
+<!-- END_INCLUDE(docker:run-container-and-application) -->
+<!-- BEGIN_INCLUDE(docker:start-container) -->
+    <docker:start-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:start-container) -->
+<!-- BEGIN_INCLUDE(docker:stop-container) -->
+    <docker:stop-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:stop-container) -->
+<!-- BEGIN_INCLUDE(docker:unpause-container) -->
+    <docker:unpause-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"/>
+<!-- END_INCLUDE(docker:unpause-container) -->
+<!-- BEGIN_INCLUDE(docker:wait-a-container) -->
+    <docker:wait-a-container config-ref="Docker__HTTP_Docker_Config"  doc:name="Docker" containerName="test_container"    />
+<!-- END_INCLUDE(docker:wait-a-container) -->
+<!-- BEGIN_INCLUDE(docker:tag-image) -->
+    <docker:tag-image config-ref="Docker__HTTP_Docker_Config1" doc:name="Docker" destImageName="dest_image_name" destImagetag="dest_tag" imageName="test_image" imageTag="test_image_tag" repository="localhost:5000"/>
+<!-- END_INCLUDE(docker:tag-image) -->
+<!-- BEGIN_INCLUDE(docker:push-image) -->
+    <docker:push-image config-ref="Docker__HTTP_Docker_Config1" doc:name="Docker"   imageName="test_image" imageTag="test_image_tag" />
+<!-- END_INCLUDE(docker:push-image) -->
