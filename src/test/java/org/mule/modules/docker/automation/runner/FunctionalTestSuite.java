@@ -1,5 +1,5 @@
 /**
- * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license, a copy of which has been included with this distribution in the LICENSE.md file.
+ * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
 package org.mule.modules.docker.automation.runner;
 
@@ -8,7 +8,6 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.functional.BuildImageTestCases;
 import org.mule.modules.docker.automation.functional.CreateContainerTestCases;
 import org.mule.modules.docker.automation.functional.CreateVolumeTestCases;
@@ -35,17 +34,19 @@ import org.mule.modules.docker.automation.functional.StopContainerTestCases;
 import org.mule.modules.docker.automation.functional.TagImageTestCases;
 import org.mule.modules.docker.automation.functional.UnpauseContainerTestCases;
 import org.mule.modules.docker.automation.functional.WaitAContainerTestCases;
+import org.mule.modules.docker.DockerConnector;
 import org.mule.tools.devkit.ctf.mockup.ConnectorTestContext;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CreateContainerTestCases.class, InspectContainerTestCases.class, DeleteContainerTestCases.class,
-        KillContainerTestCases.class, PauseContainerTestCases.class, RestartContainerTestCases.class,
-        RunContainerTestCases.class, StartContainerTestCases.class, StopContainerTestCases.class,
-        ListContainersTestCases.class, UnpauseContainerTestCases.class, WaitAContainerTestCases.class,
-        RemoveVolumeTestCases.class, CreateVolumeTestCases.class, InspectVolumeTestCases.class,
-        ListVolumeTestCases.class, PullImageTestCases.class, ListImageTestCases.class, BuildImageTestCases.class,
-        DockerInfoTestCases.class, InspectImageTestCases.class, PushImageTestCases.class, RemoveImageTestCases.class,
-        TagImageTestCases.class, GetContainerLogsTestCases.class, GetContainerStatsTestCases.class })
+@SuiteClasses({ BuildImageTestCases.class, CreateContainerTestCases.class, CreateVolumeTestCases.class,
+        DeleteContainerTestCases.class, DockerInfoTestCases.class, InspectContainerTestCases.class,
+        InspectImageTestCases.class, InspectVolumeTestCases.class, KillContainerTestCases.class,
+        GetContainerLogsTestCases.class, GetContainerStatsTestCases.class, ListContainersTestCases.class,
+        ListImageTestCases.class, ListVolumeTestCases.class, PauseContainerTestCases.class, PullImageTestCases.class,
+        PushImageTestCases.class, RemoveImageTestCases.class, RemoveVolumeTestCases.class,
+        RestartContainerTestCases.class, RunContainerTestCases.class, StartContainerTestCases.class,
+        StopContainerTestCases.class, TagImageTestCases.class, UnpauseContainerTestCases.class,
+        WaitAContainerTestCases.class })
 
 public class FunctionalTestSuite {
 

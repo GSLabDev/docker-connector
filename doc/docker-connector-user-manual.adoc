@@ -11,11 +11,10 @@ toc::[]
 [[overview]]
 == Overview
 
-The Anypoint Connector for Docker lets you connect to the docker engine and docker registry. The connector exposes convenient methods for exploiting the capabilities of Docker.
+Docker Connector, built using Docker Java API client, is a communication tool that provides seamless integration with the Docker engine from a mule flow. It exposes Docker operations by executing their API calls as per configuration. It supports HTTP and HTTPS connections and can be used as an inbound as well as outbound connector from the mule flow.
+Read through this user guide to understand how to set up and configure a basic flow using the connector. 
 
-The connector executes API calls targeting Docker’s REST API depending on your configurations. The API calls uses JSON request/response over HTTP and HTTPS connection. All required HTTP and HTTPS connection configurations are abstracted and built into the connector.
-
-Read through this user guide to understand how to set up and configure a basic flow using the connector. Track features and API version updates using the Docker connector release notes. Review the connector operations and see how they work by reviewing the technical reference. alongside the demo applications.
+Track features and API version updates using the Docker connector release notes. Review the connector operations and see how they work by reviewing the technical reference. alongside the demo applications.
 
 [[important-concepts]]
 == Important Concepts
@@ -25,9 +24,9 @@ link:https://docs.mulesoft.com/mule-user-guide/v/3.9/anypoint-connectors[Anypoin
 link:https://www.mulesoft.com/platform/studio[Anypoint Studio]. To increase your familiarity with Studio, consider completing a link:https://docs.mulesoft.com/anypoint-studio/v/6/basic-studio-tutorial[Anypoint Studio Tutorial]. This page requires basic knowledge of link:https://docs.mulesoft.com/mule-user-guide/v/3.9/mule-concepts[Mule Key Concepts], link:https://docs.mulesoft.com/mule-user-guide/v/3.9/elements-in-a-mule-flow[Elements in a Mule Flow], and link:https://www.docker.com/[Docker].
 
 [[requirements]]
-== Hardware and Software Requirements
+== Software Requirements
 
-For hardware and software requirements, visit the link:docker-connector-release-notes.adoc[Connector Release Notes].
+For software requirements, visit the link:docker-connector-release-notes.adoc[Connector Release Notes].
 
 [[install]]
 == How to Install
@@ -35,12 +34,12 @@ For hardware and software requirements, visit the link:docker-connector-release-
 You can install the connector in Anypoint Studio using the instructions in
 link:https://docs.mulesoft.com/mule-user-guide/v/3.9/installing-connectors[Installing a Connector from Anypoint Exchange].
 
-Additionally, we recommend that you keep Studio up to date with its latest version.
+Additionally, we recommend you to keep Studio up to date with its latest version.
 
 [[ns-schema]]
 == Connector Namespace and Schema
 
-When designing your application in Anypoint Studio, when you drag the connector from the palette onto the Anypoint Studio canvas, Studio automatically populates the XML code with the connector *namespace* and *schema location*.
+When designing your application in Anypoint Studio, when you drag the connector from the palette onto the Anypoint Studio canvas, studio automatically populates the XML code with the connector *namespace* and *schema location*.
 
 *Namespace:* `+http://www.mulesoft.org/schema/mule/docker+` +
 *Schema Location:* `+http://www.mulesoft.org/schema/mule/docker/current/mule-docker.xsd+`
@@ -68,7 +67,7 @@ If you are manually coding the Mule application in Studio's XML editor or anothe
 
 [[maven]]
 == Maven Dependency Information
-After you download and install the connector, use the following steps to make the Docker connector available to inside a Mule application for use and to package the application with the connector. If you use Anypoint Studio, it will do this automatically for you. + 
+After you download and install the connector, use the following steps to make the Docker connector available inside a Mule application for use and to package the application with connector. If you use Anypoint Studio, it will do this automatically for you. + 
 For Maven dependency management, include this XML snippet in your `pom.xml` file.
 
 ----
@@ -99,13 +98,7 @@ For Maven dependency management, include this XML snippet in your `pom.xml` file
 			<groupId>com.kohlschutter.junixsocket</groupId>
 			<artifactId>junixsocket-common</artifactId>
 			<version>${junixsocketCommonVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-			<version>${commonsCompress}</version>
-		</dependency>
-
+		</dependency>		
 	</dependencies>
 ----
 
@@ -128,20 +121,20 @@ image:create-new-project-dialogue-box.png [Create new project dialogue box]
 
 === Configuring the Docker Global Element
 Place the connector in your flow as applicable for your use case.
-To use the Docker connector in your Mule application, you must configure a global Docker element that can be used by the Docker connector. The Docker connector provides the following global configuration(s).
+To use the Docker connector in your Mule application, you must configure a global Docker element that is used by the Docker connector. The Docker connector provides the following global configuration(s).
 
 image:docker-connector-configuration.png[Docker-connector-config]
 
 [NOTE]
 To use this configuration you have to start docker daemon on TCP. By default the docker engine is using local UNIX sockets for communication with the docker CLI.
-Access Access link:++https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option++[Daemon socket option] for detailed information about starting docker daemon on TCP.
+Access link:++https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option++[Daemon socket option] for detailed information about starting docker daemon on TCP.
 
 [[authentication]]
 === Authentication
-To access Docker you have the following possibilities for connection:
+To access Docker you have following possibilities for a connection:
 
 ==== NO AUTHENTICATION + 
-In NO AUTHENTICATION, you need provide your docker host and port in a global configuration. No authentication is generally recommended for internal applications. Docker daemon is running on HTTP port. To make the docker daemon listening on a HTTP port run following commands: + 
+In NO AUTHENTICATION, you need to provide your docker host and port in a global configuration. No authentication is generally recommended for internal applications. To make the docker daemon listening on a HTTP port run following commands: + 
 
 ** Stop Docker daemon if running: + 
 `$service docker stop`
@@ -151,11 +144,9 @@ In NO AUTHENTICATION, you need provide your docker host and port in a global con
 
 TIP: This will start docker daemon on port 2375. Now use docker host IP and port 2375 while making connection with docker daemon from *Anypoint Studio* using *Docker connector*. + 
 
-[NOTE]
-Access Access link:++https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option++[Daemon socket option] for detailed information about starting docker daemon on HTTP. + 
 
 ==== CERTIFICATE BASED AUTHENTICATION + 
-Implementing CERTIFICATE BASED AUTHENTICATION mechanisms involves a few extra steps, but preferred if your Docker is exposed to external users, as it ensures better security. + 
+Implementing CERTIFICATE BASED AUTHENTICATION mechanisms involves a few extra steps, but ìs preferred if your Docker is exposed to external users, as it ensures better security. + 
 
 * Artefact required in CERTIFICATE BASED AUTHENTICATION + 
 ** Certificates
@@ -178,7 +169,7 @@ To make the docker daemon listening on a https, generate server and client certi
 TIP: This will start docker daemon on port 2375. Now, download and use *ca.pem, key.pem and cert.pem* while making connection with docker daemon from *Anypoint Studio* using *Docker connector*. + 
 
 [NOTE]
-Access Access link:++https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option++[Daemon socket option] for detailed information about starting docker daemon on HTTPS. + 
+Access link:++https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option++[Daemon socket option] for detailed information about starting docker daemon on HTTPS. + 
 
 Following parameters are required for *HTTP* configuration:
 
@@ -206,7 +197,7 @@ To use this configuration, you have to start docker daemon on http as mentioned 
 
 image:docker-https-global-element-props.png[Docker-HTTPS-config]
 [NOTE]
-To use this configuration, you have to start docker daemon on http as mentioned in CERTIFICATE BASED AUTHENTICATION.
+To use this configuration, you have to start docker daemon on https as mentioned in CERTIFICATE BASED AUTHENTICATION.
 
 [[operations]]
 === Understanding the Docker Connector
@@ -223,7 +214,7 @@ The real value of the Docker connector is in the way you use it at design-time i
 [[operations]]
 == Operations
 To see all possible operations, expected parameters and returned data for the connector, see the list of Technical Reference link:docker-apidoc.html[Docker API docs]. + 
-
+	
 === Outbound
 
 You can use Docker connector as an outbound connector in your flow to call different docker operations with parameters. Use the connector in your flow at any point after an inbound endpoint.
@@ -264,13 +255,15 @@ image:docker-get-container-stats.png[Docker Stream Container statistics]
 
 * link:#use-case-2[Scale up and scale down Docker containers]
 
+* link:#use-case-3[Create a container]
+
 
 [use-case-1]
 === Build Docker image from Dockerfile and run container
 ** In Anypoint Studio, click *File > New > Mule Project*, name the project, and click *OK*.
 ** In the search field, type *http* and drag the *HTTP connector* to the canvas. 
 ** Click the HTTP connector, click the *green plus* sign to the right of Connector Configuration, and in the next screen, click *OK* to accept the default settings.
-** In the Search bar type *docker* and drag the *Docker connector* onto the canvas. Configure as before.
+** In the Search bar type *docker* and drag the *Docker connector* onto the canvas.
 ** Click the  *green plus* sign to the right of Connector Configuration to select among the HTTP or HTTPS configuration.
 ** Fill the IP or Host Name, port number ( and client certificate directory path in case of HTTPS) and select OK.
 ** Create Dockerfile in *src/main/resources/docker* and add content as below :
@@ -399,7 +392,8 @@ http://www.mulesoft.org/schema/mule/docker http://www.mulesoft.org/schema/mule/d
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
 	<http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-	<docker:HTTP-Docker-Config name="Docker__HTTP_Docker_Config" dockerHostIP="172.21.25.172" dockerHostPort="2375" doc:name="Docker: HTTP Docker Config"/>
+	<docker:HTTP-Docker-Config name="Docker__HTTP_Docker_Config" dockerHostIP="${docker.host}" dockerHostPort="${docker.port}" doc:name="Docker: HTTP Docker Config"/>
+    <context:property-placeholder location="mule-app.properties"/>
 	<flow name="CreateandRunContainer">
 		<http:listener config-ref="HTTP_Listener_Configuration" path="/createapp" doc:name="HTTP"/>
 		<docker:run-container config-ref="Docker__HTTP_Docker_Config" imageName="runapp" containerName="runappApplication" doc:name="Run container">
@@ -436,6 +430,218 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 			</otherwise>
 		</choice>
 	</flow>
+</mule>
+
+----
+
+[use-case-3]
+=== Create a container
+** In Anypoint Studio, click *File > New > Mule Project*, name the project, and click *OK*.
+** In the search field, type *http* and drag the *HTTP connector* to the canvas. 
+** Click the HTTP connector, click the *green plus* sign to the right of Connector Configuration, and in the next screen, click *OK* to accept the default settings.
+** In the Search bar type *docker* and drag the *Docker connector* onto the canvas. Configure as before.
+** Click the  *green plus* sign to the right of Connector Configuration to select among the HTTP or HTTPS configuration.
+** Fill the IP or Host Name, port number ( and client certificate directory path in case of HTTPS) and select OK.
+** From the operation window select the *Create Container* operation. Enter parameters required to this operation. + 
+** Create createContainer.json in *src/main/resources/docker* and add required content as below :
+----
+{
+	"Hostname": "",
+	"Domainname": "",
+	"User": "",
+	"AttachStdin": false,
+	"AttachStdout": true,
+	"AttachStderr": true,
+	"Tty": false,
+	"OpenStdin": false,
+	"StdinOnce": false,
+	"Env": [
+		"FOO=bar",
+		"BAZ=quux"
+	],
+	"Cmd": [
+		"date"
+	],
+	"Entrypoint": "",
+	"Image": "ubuntu",
+	"Labels": {
+		"com.example.vendor": "Acme",
+		"com.example.license": "GPL",
+		"com.example.version": "1.0"
+	},
+	"Volumes": {
+		"/volumes/data": {}
+	},
+	"WorkingDir": "/home",
+	"NetworkDisabled": false,
+	"MacAddress": "12:34:56:78:9a:bc",
+	"ExposedPorts": {
+		"22/tcp": {},
+		"8080/udp": {}
+	},
+	"StopSignal": "SIGTERM",
+	"HostConfig": {
+		"Binds": [
+			"/tmp:/tmp"
+		],
+		"Tmpfs": {
+			"/run": "rw,noexec,nosuid,size=65536k"
+		},
+		"Links": [
+			"redis3:redis"
+		],
+		"Memory": 0,
+		"MemorySwap": 0,
+		"MemoryReservation": 0,
+		"KernelMemory": 0,
+		"CpuPercent": 80,
+		"CpuShares": 512,
+		"CpuPeriod": 100000,
+		"CpuQuota": 50000,
+		"CpusetCpus": "0,1",
+		"CpusetMems": "0,1",
+		"IOMaximumBandwidth": 0,
+		"IOMaximumIOps": 0,
+		"BlkioWeight": 300,
+		"BlkioWeightDevice": [
+			{}
+		],
+		"BlkioDeviceReadBps": [
+			{}
+		],
+		"BlkioDeviceReadIOps": [
+			{}
+		],
+		"BlkioDeviceWriteBps": [
+			{}
+		],
+		"BlkioDeviceWriteIOps": [
+			{}
+		],
+		"MemorySwappiness": 60,
+		"OomKillDisable": false,
+		"oomScoreAdj": 500,
+		"PidMode": "",
+		"PidsLimit": -1,
+		"PortBindings": {
+			"22/tcp": [
+				{
+					"HostPort": "11022"
+				}
+			]
+		},
+		"PublishAllPorts": false,
+		"Privileged": false,
+		"ReadonlyRootfs": false,
+		"Dns": [
+			"8.8.8.8"
+		],
+		"DnsOptions": [
+			""
+		],
+		"DnsSearch": [
+			""
+		],
+		"ExtraHosts": null,
+		"VolumesFrom": [
+			"parent",
+			"other:ro"
+		],
+		"CapAdd": [
+			"NET_ADMIN"
+		],
+		"CapDrop": [
+			"MKNOD"
+		],
+		"GroupAdd": [
+			"newgroup"
+		],
+		"RestartPolicy": {
+			"Name": "",
+			"MaximumRetryCount": 0
+		},
+		"NetworkMode": "bridge",
+		"Devices": [],
+		"Sysctls": {
+			"net.ipv4.ip_forward": "1"
+		},
+		"Ulimits": [
+			{}
+		],
+		"LogConfig": {
+			"Type": "json-file",
+			"Config": {}
+		},
+		"SecurityOpt": [],
+		"StorageOpt": {},
+		"CgroupParent": "",
+		"VolumeDriver": "",
+		"ShmSize": 67108864
+	},
+	"NetworkingConfig": {
+		"EndpointsConfig": {
+			"isolated_nw": {
+				"IPAMConfig": {
+					"IPv4Address": "172.20.30.33",
+					"IPv6Address": "2001:db8:abcd::3033"
+				},
+				"Aliases": [
+					"server_x",
+					"server_y"
+				]
+			}
+		}
+	}
+}
+----
+[NOTE]
+Above complete JSON is not mandatory, subset of these options can be provided as input. Options except Healthcheck are supported in the create container operation. + 
+For more information refer link:https://docs.docker.com/engine/api/v1.24/#3-endpoints[Docker create container API]. + 
+ 
+Example JSON:
+----
+{
+	"HostConfig": {
+		"Binds": [
+			"/tmp:/tmp"
+		]
+	}
+}
+----
+
+*Operation parameters looks like :* + 
+	image:create-container-flow-params.png[Docker-run-config] + 
+ + 
+
+** Drag the *logger* onto the canvas and from the operation window select the *Inspect Container* operation. Enter *Container Name* as *#[payload.id]*. + 
+** Drag the *logger* onto the canvas and log *#[payload]* to view low level information of created container.
+** After you create the flows, right-click the project name in the  and click Run As > Mule Application. + 
+	image:create-container-flow.png[Docker-flow] + 
+ +  
+*Example Use Case Code :*
+
+Paste this XML code into Anypoint Studio to experiment with the flow described in the previous section.
+----
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:context="http://www.springframework.org/schema/context" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:docker="http://www.mulesoft.org/schema/mule/docker" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/docker http://www.mulesoft.org/schema/mule/docker/current/mule-docker.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-current.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <docker:HTTP-Docker-Config name="Docker__HTTP_Docker_Config" dockerHostIP="${docker.host}" dockerHostPort="${docker.port}" doc:name="Docker: HTTP Docker Config"/>
+    <context:property-placeholder location="mule-app.properties"/>
+    <flow name="CreateContainertestFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
+        <docker:create-container config-ref="Docker__HTTP_Docker_Config"  jsonFilePath="src\main\resources\CreateContainer.json"  doc:name="create container using json file"/>
+        <docker:inspect-container config-ref="Docker__HTTP_Docker_Config" containerName="#[payload.id]" doc:name="Inspect created container"/>
+        <logger level="INFO" doc:name="log inspect container response" message="#[payload]"/>
+    </flow>
 </mule>
 
 ----

@@ -1,7 +1,7 @@
 # README.md
 
 ## Docker Anypoint™ Connector
-Docker Connector is a communication tool that provides seamless integration with the Docker engine from a mule flow. It exposes Docker operations by executing API calls as per configuration. It supports http and https connections and can be used as inbound, inbount streaming and outbound connector from the mule flow. Docker connector is build using docker-java client. 
+Docker Connector is a communication tool that provides seamless integration with the Docker engine from a mule flow. It exposes Docker operations by executing API calls as per configuration. It supports *HTTP* and *HTTPS* connections and can be used as inbound, inbount streaming and outbound connector from the mule flow. Docker connector is build using docker-java client. 
 
 ## Supported Mule runtime versions
 Mule 3.8.5
@@ -42,7 +42,7 @@ Certificates required in this authentication mechanism are -
     - Client certificate (cert.pem)
     - Client key (key.pem)
     
-**Note : For more information refer [Docker Documentation](https://docs.docker.com/engine/security/https/)**
+***Note : For more information refer [Docker Documentation](https://docs.docker.com/engine/security/https/)***
     
 - To make the Docker daemon listening on a https, generate server and client certificates on docker host.
     - Stop Docker daemon if running:
@@ -54,8 +54,8 @@ Certificates required in this authentication mechanism are -
     $dockerd --tlsverify --tlscacert=ca.pem --tlscert=server-cert.pem --tlskey=server-key.pem -H=0.0.0.0:2376
     ```
     
-    **Note: This will start docker daemon on port 2376.
-    Copy certificates (ca.pem, key.pem and cert.pem) from Docker host to Anypoint studio for HTTPS configuration.**
+    ***Note: This will start docker daemon on port 2376.
+    Copy certificates (ca.pem, key.pem and cert.pem) from Docker host to Anypoint studio for HTTPS configuration.***
         
 ## Testing information
 
@@ -73,12 +73,12 @@ Certificates required in this authentication mechanism are -
         - HTTPS-Docker-Config.apiVersion.clientCertificateDirectoryPath=Path of directory containing certificates required for docker TLS connection (ca.pem, cert.pem, key.pem)
         
 - Set VM or maven arguments to -Dactiveconfiguration=HTTPS-Docker-Config or -Dactiveconfiguration=HTTP-Docker-Config depending on which config-type you are using.
-- Run Junit test suite FunctionalTestSuite.java with HTTP-Docker-Config using following command:
-```
-mvn clean && mvn test -Dtest="*TestSuite,*Test" -Dactiveconfiguration=HTTP-Docker-Config
-```    
+- Run Junit test suite FunctionalTestSuite.java with HTTP-Docker-Config using following command: 
+        ```
+        mvn clean && mvn test -Dtest="*TestSuite,*Test" -Dactiveconfiguration=HTTP-Docker-Config
+        ```    
 
 
 ## Reporting Issues
 
-Use GitHub for tracking issues with this connector. To report new issues use this [link](https://github.com/GSLabDev/docker-connector/issues).
+Use GitHub for tracking issues with this connector. To report new issues use this [link] (https://github.com/GSLabDev/docker-connector/issues).

@@ -1,4 +1,7 @@
 /**
+ * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ */
+/**
  * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license, a copy of which has been included with this distribution in the LICENSE.md file.
  */
 package org.mule.modules.docker.automation.functional;
@@ -16,6 +19,7 @@ public class DeleteContainerTestCases extends AbstractTestCase<DockerConnector> 
 
     java.lang.String containerName = "Created-Test-delete";
     java.lang.String imageName = "busybox", imageTag = "latest";
+    boolean removeVolumes = false;
     com.github.dockerjava.api.command.CreateContainerResponse createContainerResponse = null;
 
     public DeleteContainerTestCases() {
@@ -25,8 +29,8 @@ public class DeleteContainerTestCases extends AbstractTestCase<DockerConnector> 
     @Before
     public void setup() {
         try {
-            getConnector().pullImage(imageName, imageTag);
-            createContainerResponse = getConnector().createContainer(imageName, imageTag, containerName);
+            getConnector().pullImage(imageName, imageTag, null, null);
+            createContainerResponse = getConnector().createContainer(imageName, imageTag, containerName, null);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -41,7 +45,7 @@ public class DeleteContainerTestCases extends AbstractTestCase<DockerConnector> 
     public void verify() {
         int containerCount = getConnector().dockerInfo().getContainers();
         assertTrue(containerCount > 1);
-        getConnector().deleteContainer(containerName, true);
+        getConnector().deleteContainer(containerName, true, removeVolumes);
         assertEquals(containerCount, (getConnector().dockerInfo().getContainers() + 1));
     }
 
