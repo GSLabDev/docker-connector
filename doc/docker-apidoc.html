@@ -1,8 +1,3 @@
-<!--
-
-    (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
-
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2097,26 +2092,26 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_processors">Processors</a>
 <ul class="sectlevel2">
 <li><a href="#_docker_info">Docker Info</a></li>
-<li><a href="#_start_container">Start Container</a></li>
 <li><a href="#_list_containers">List Containers</a></li>
 <li><a href="#_create_container">Create Container</a></li>
-<li><a href="#_tag_image">Tag Image</a></li>
-<li><a href="#_push_image">Push Image</a></li>
-<li><a href="#_stop_container">Stop Container</a></li>
 <li><a href="#_inspect_container">Inspect Container</a></li>
-<li><a href="#_run_container">Run Container</a></li>
-<li><a href="#_pull_image">Pull Image</a></li>
+<li><a href="#_start_container">Start Container</a></li>
+<li><a href="#_stop_container">Stop Container</a></li>
 <li><a href="#_restart_container">Restart Container</a></li>
 <li><a href="#_kill_container">Kill Container</a></li>
 <li><a href="#_pause_container">Pause Container</a></li>
 <li><a href="#_unpause_container">Unpause Container</a></li>
+<li><a href="#_wait_for_a_container">Wait for A Container</a></li>
 <li><a href="#_delete_container">Delete Container</a></li>
+<li><a href="#_run_container">Run Container</a></li>
 <li><a href="#_list_images">List Images</a></li>
 <li><a href="#_build_an_image_from_docker_file">Build an image from Docker file</a></li>
+<li><a href="#_pull_image">Pull Image</a></li>
 <li><a href="#_inspect_image">Inspect Image</a></li>
+<li><a href="#_push_image">Push Image</a></li>
+<li><a href="#_tag_image">Tag Image</a></li>
 <li><a href="#_remove_image">Remove Image</a></li>
 <li><a href="#_list_volumes">List Volumes</a></li>
-<li><a href="#_wait_for_a_container">Wait for A Container</a></li>
 <li><a href="#_create_volume">Create Volume</a></li>
 <li><a href="#_inspect_volume">Inspect Volume</a></li>
 <li><a href="#_remove_volume">Remove Volume</a></li>
@@ -2136,12 +2131,11 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sectionbody">
 <div class="paragraph">
 <p>
-The Docker Connector will allow the end user to perform operations on the
-docker engine. Almost every operation of images, containers and volumes that
-can be done via the docker engine APIs can be done using this connector. This
-connector can be operated in HTTP and HTTPS modes. The technical details of
-this connector such as request headers, error handling, HTTPS connection, etc
-are all abstracted from the user to make it easy to use.
+Docker Connector, built using Docker Java API client, is a communication tool
+that provides seamless integration with the Docker engine from a mule flow.
+It exposes Docker operations by executing their API calls as per
+configuration. It supports HTTP and HTTPS connections and can be used as
+inbound as well as outbound connector from the mule flow.
 </p>
 </div>
 <div class="paragraph">
@@ -2163,7 +2157,7 @@ are all abstracted from the user to make it easy to use.
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Mule Version</p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock">3.8.5 or higher</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">3.8.5</p></td>
 </tr>
 </tbody>
 </table>
@@ -2380,20 +2374,20 @@ Get the docker information.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_start_container">Start Container</h3>
+<h3 id="_list_containers">List Containers</h3>
 <div class="paragraph">
-<p><code>&lt;docker:start-container&gt;</code></p>
+<p><code>&lt;docker:list-containers&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Start a container on docker host.
+Get the list of containers.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_2">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:start-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:list-containers</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>    <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2425,66 +2419,9 @@ Start a container on docker host.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container to be started (It is assumed that the container is initially created or in stopped state).</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_list_containers">List Containers</h3>
-<div class="paragraph">
-<p><code>&lt;docker:list-containers&gt;</code></p>
-</div>
-<div class="paragraph">
-<p>
-Get the list of containers.
-</p>
-</div>
-<div class="sect3">
-<h4 id="_xml_sample_3">XML Sample</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:list-containers</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>    <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_attributes_5">Attributes</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 35%;">
-<col style="width: 20%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Name</th>
-<th class="tableblock halign-left valign-middle">Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Default Value</th>
-<th class="tableblock halign-center valign-middle">Required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">showAll</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Show all container: Running and Exited.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Show all container: Running and Exited</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -2498,14 +2435,14 @@ Get the list of containers.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">limit</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Show limit last created containers, include non-running ones.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Show limit last created containers, include non-running ones</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">showSize</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Show the containers sizes.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Show the containers sizes</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -2519,7 +2456,7 @@ Get the list of containers.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">labels</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">labels associated with the container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">labels associated with the container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -2560,10 +2497,109 @@ Create a container on docker host using a docker image.
 </p>
 </div>
 <div class="sect3">
+<h4 id="_xml_sample_3">XML Sample</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:create-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntuContainer</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">jsonFilePath</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">src\main\resources\CreateContainer.json</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attributes_5">Attributes</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 35%;">
+<col style="width: 20%;">
+<col style="width: 5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Default Value</th>
+<th class="tableblock halign-center valign-middle">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name to be used to create the container</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container that will be created</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">jsonFilePath</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Path of JSON file that will be used to set request parameters. All options except Healthcheck are supported in the JSON.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_returns_3">Returns</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Return Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">CreateContainerResponse</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information of the created container.</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inspect_container">Inspect Container</h3>
+<div class="paragraph">
+<p><code>&lt;docker:inspect-container&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>
+Inspect the container.
+</p>
+</div>
+<div class="sect3">
 <h4 id="_xml_sample_4">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:create-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntuContainer</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">jsonFilePath</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">C:\Users\Desktop\Dockerfile</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:inspect-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">showSize</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2595,38 +2631,24 @@ Create a container on docker host using a docker image.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name to be used to create the container.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container that will be created.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the existing container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">jsonFilePath</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Path of JSON file that will be used to set request parameters</p></td>
-<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">showSize</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Return container size information</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_returns_3">Returns</h4>
+<h4 id="_returns_4">Returns</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 40%;">
@@ -2640,8 +2662,8 @@ Create a container on docker host using a docker image.
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">CreateContainerResponse</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information of the created container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">InspectContainerResponse</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information on the container with containerName.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2649,20 +2671,20 @@ Create a container on docker host using a docker image.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tag_image">Tag Image</h3>
+<h3 id="_start_container">Start Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:tag-image&gt;</code></p>
+<p><code>&lt;docker:start-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Tag a docker image.
+Start a container on docker host.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_5">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:tag-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config1</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">destImageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dest_image_name</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">destImagetag</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dest_tag</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageTag</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image_tag</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">repository</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">localhost:5000</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:start-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2694,37 +2716,9 @@ Tag a docker image.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the source image.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag of the source image.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">destImageName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the image to be reflected in registry.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">repository</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Repository URL</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">destImagetag</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag of the image in registry.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container to be started (container is initially in stopped state).</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
@@ -2734,20 +2728,20 @@ Tag a docker image.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_push_image">Push Image</h3>
+<h3 id="_stop_container">Stop Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:push-image&gt;</code></p>
+<p><code>&lt;docker:stop-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Push an image to registry.
+Stop the running container.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_6">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:push-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config1</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span>   <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageTag</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image_tag</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:stop-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">timeout</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">10</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2779,18 +2773,18 @@ Push an image to registry.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the image to be pushed in the registry.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the container to be stopped (Container is initially in start state).</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag of the image that is to be pushed to registry.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">timeout</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Number of seconds to wait before killing the container</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
 </table>
@@ -2798,20 +2792,20 @@ Push an image to registry.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_stop_container">Stop Container</h3>
+<h3 id="_restart_container">Restart Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:stop-container&gt;</code></p>
+<p><code>&lt;docker:restart-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Stop the running container.
+Restart the container.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_7">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:stop-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">timeout</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">10</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:restart-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">timeout</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">10</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2845,14 +2839,14 @@ Stop the running container.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container to be stopped (It is assumed that the container is initially in start state).</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the running container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">timeout</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Number of seconds to wait before killing the container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Number of seconds to wait before killing the container</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -2862,20 +2856,20 @@ Stop the running container.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_inspect_container">Inspect Container</h3>
+<h3 id="_kill_container">Kill Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:inspect-container&gt;</code></p>
+<p><code>&lt;docker:kill-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Inspect the container.
+Kill the container.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_8">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:inspect-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">showSize</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:kill-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">signal</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">SIGKILL</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2909,37 +2903,16 @@ Inspect the container.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the existing container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the running container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">showSize</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Return container size information. Default is false.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">signal</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Signal to send to the container: integer or string like SIGINT. When not set, SIGKILL is assumed and the call waits for the container to exit.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">SIGKILL</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_returns_4">Returns</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 60%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Return Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">InspectContainerResponse</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information on the container with containerName.</p></td>
 </tr>
 </tbody>
 </table>
@@ -2947,21 +2920,20 @@ Inspect the container.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_run_container">Run Container</h3>
+<h3 id="_pause_container">Pause Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:run-container&gt;</code></p>
+<p><code>&lt;docker:pause-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-A custom operation where Create-Container and Start-Container operations
-are performed.
+Pause the container.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_9">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:run-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:pause-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -2993,53 +2965,11 @@ are performed.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name used to create the container.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Container name which will be created.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the running container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">command</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Command executed while running container.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_returns_5">Returns</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 60%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Return Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">CreateContainerResponse</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Low level details of the container gets generated from docker.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3047,20 +2977,20 @@ are performed.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_pull_image">Pull Image</h3>
+<h3 id="_unpause_container">Unpause Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:pull-image&gt;</code></p>
+<p><code>&lt;docker:unpause-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Pull an image from docker registry to the docker host.
+Unpause the container.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_10">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:pull-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:unpause-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3092,39 +3022,11 @@ Pull an image from docker registry to the docker host.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the paused container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_returns_6">Returns</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 60%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Return Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">InspectImageResponse</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information on the image imageName.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3132,20 +3034,20 @@ Pull an image from docker registry to the docker host.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_restart_container">Restart Container</h3>
+<h3 id="_wait_for_a_container">Wait for A Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:restart-container&gt;</code></p>
+<p><code>&lt;docker:wait-a-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Restart the container.
+Wait for a container with given name or ID to execute.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_11">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:restart-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">timeout</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">10</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:wait-a-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3179,16 +3081,9 @@ Restart the container.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the running container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the container that needs to wait</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">timeout</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Number of seconds to wait before killing the container</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
 </table>
@@ -3196,20 +3091,20 @@ Restart the container.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_kill_container">Kill Container</h3>
+<h3 id="_delete_container">Delete Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:kill-container&gt;</code></p>
+<p><code>&lt;docker:delete-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Kill the container.
+Delete the container with container name or ID.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_12">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:kill-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">signal</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">SIGKILL</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:delete-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">forceDelete</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">removeVolumes</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3243,15 +3138,22 @@ Kill the container.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the running container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">signal</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Signal to send to the container: integer or string like SIGINT. When not set, SIGKILL is assumed and the call waits for the container to exit.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">SIGKILL</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">forceDelete</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Force remove container</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">removeVolumes</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Remove the volumes associated with the container</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
@@ -3260,20 +3162,21 @@ Kill the container.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_pause_container">Pause Container</h3>
+<h3 id="_run_container">Run Container</h3>
 <div class="paragraph">
-<p><code>&lt;docker:pause-container&gt;</code></p>
+<p><code>&lt;docker:run-container&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Pause the container.
+A custom operation where Create-Container and Start-Container operations
+are performed.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_13">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:pause-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:run-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3305,11 +3208,53 @@ Pause the container.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the running container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name used to create the container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Container name or ID which will be created</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">command</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Command executed while running container</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_returns_5">Returns</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Return Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">CreateContainerResponse</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Low level details of the container gets generated from docker.</p></td>
 </tr>
 </tbody>
 </table>
@@ -3317,20 +3262,20 @@ Pause the container.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_unpause_container">Unpause Container</h3>
+<h3 id="_list_images">List Images</h3>
 <div class="paragraph">
-<p><code>&lt;docker:unpause-container&gt;</code></p>
+<p><code>&lt;docker:list-image&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Unpause the container.
+Get the list of images.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_14">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:unpause-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:list-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">dangling</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageNameFilter</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">showAll</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3362,158 +3307,30 @@ Unpause the container.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the paused container.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_delete_container">Delete Container</h3>
-<div class="paragraph">
-<p><code>&lt;docker:delete-container&gt;</code></p>
-</div>
-<div class="paragraph">
-<p>
-Delete the container with container name or id.
-</p>
-</div>
-<div class="sect3">
-<h4 id="_xml_sample_15">XML Sample</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:delete-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">forceDelete</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">removeVolumes</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_attributes_17">Attributes</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 35%;">
-<col style="width: 20%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Name</th>
-<th class="tableblock halign-left valign-middle">Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Default Value</th>
-<th class="tableblock halign-center valign-middle">Required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">forceDelete</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Force remove container (optional parameter).</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">removeVolumes</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Remove the volumes associated to the container. Default false.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_list_images">List Images</h3>
-<div class="paragraph">
-<p><code>&lt;docker:list-image&gt;</code></p>
-</div>
-<div class="paragraph">
-<p>
-Get the list of images.
-</p>
-</div>
-<div class="sect3">
-<h4 id="_xml_sample_16">XML Sample</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:list-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">dangling</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageNameFilter</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">showAll</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_attributes_18">Attributes</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 35%;">
-<col style="width: 20%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Name</th>
-<th class="tableblock halign-left valign-middle">Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Default Value</th>
-<th class="tableblock halign-center valign-middle">Required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">showAll</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Display all the images. Default is set to false.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Display all the images</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">dangling</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Images with dangling status.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Images with dangling status</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">imageNameFilter</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">only return images with the specified name.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Return images with the specified name</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">imageLabelFilter</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">only return images with the specified label.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Return images with the specified label</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -3521,7 +3338,7 @@ Get the list of images.
 </table>
 </div>
 <div class="sect3">
-<h4 id="_returns_7">Returns</h4>
+<h4 id="_returns_6">Returns</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 40%;">
@@ -3554,10 +3371,285 @@ Create an image using docker file.
 </p>
 </div>
 <div class="sect3">
+<h4 id="_xml_sample_15">XML Sample</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:build-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">dockerFilePath</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">src\main\resources\Dockerfile</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attributes_17">Attributes</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 35%;">
+<col style="width: 20%;">
+<col style="width: 5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Default Value</th>
+<th class="tableblock halign-center valign-middle">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">dockerFilePath</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Path of the Docker file</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTags</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag to apply to the image in the "name:tag" format</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">cpuSet</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">CPUs in which to allow execution (e.g., 0-3, 0,1)</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">cpuShares</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">CPU shares (relative weight)</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">labels</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html">Map</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Key-value labels to set on the image</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">memory</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Memory limit for build (in Bytes)</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">memswap</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Total memory (memory + swap). Set as -1 to disable swap</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">-1</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">buildArgumetName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of build-time variables</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">null</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">buildArgumetValue</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Value of build-time variables</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">cacheFromImage</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Use the cache when building the image</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">noCache</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Do not use the cache when building the image</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">forcerm</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Always remove intermediate containers, even upon failure</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">true</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">pullImage</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Attempt to pull the image even if an older image exists locally.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">true</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">removeContainers</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Remove intermediate containers after a successful build</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">remoteURI</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">A Git repository URI or HTTP/HTTPS context URI pointing to Dockerfile or tarball.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_returns_7">Returns</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Return Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">InspectImageResponse</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information of the image.</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pull_image">Pull Image</h3>
+<div class="paragraph">
+<p><code>&lt;docker:pull-image&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>
+Pull an image from docker registry to the docker host.
+</p>
+</div>
+<div class="sect3">
+<h4 id="_xml_sample_16">XML Sample</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:pull-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attributes_18">Attributes</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 35%;">
+<col style="width: 20%;">
+<col style="width: 5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Default Value</th>
+<th class="tableblock halign-center valign-middle">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name or the registry url for the image like localhost:5000/ubuntu.</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">username</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Username for the private registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">password</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Password for the private registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_returns_8">Returns</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Return Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">InspectImageResponse</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information on the image imageName.</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inspect_image">Inspect Image</h3>
+<div class="paragraph">
+<p><code>&lt;docker:inspect-image&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>
+Inspect an image to get the low level information of the image.
+</p>
+</div>
+<div class="sect3">
 <h4 id="_xml_sample_17">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:build-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">dockerFilePath</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">C:\Users\Desktop\docker\Dockerfile.txt</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:inspect-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3589,115 +3681,24 @@ Create an image using docker file.
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">dockerFilePath</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Path of the Docker file.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name to inspect</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTags</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag to apply to the image in the name:tag format. If you omit the tag the default latest value is assumed.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">cpuSet</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">CPUs in which to allow execution (e.g., 0-3, 0,1).</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">cpuShares</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">CPU shares (relative weight).</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">labels</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/Map.html">Map</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>,<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Key-value labels to set on the image</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">memory</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">long</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Memory limit for build (in Bytes).</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">memswap</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">long</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Total memory (memory + swap). Set as -1 to disable swap.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">-1</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">buildArgumetName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name the build argument</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">null</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">buildArgumetValue</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Value of the build argument</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">cacheFromImage</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html">List</a><<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a>></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Use the cache when building the image.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">noCache</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Do not use the cache when building the image.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">forcerm</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Always remove intermediate containers, even upon failure.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">true</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">pullImage</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Attempt to pull the image even if an older image exists locally.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">true</p></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">removeContainers</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Remove intermediate containers after a successful build.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">remoteURI</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">A Git repository URI or HTTP/HTTPS context URI points to Dockerfile or tarball.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_returns_8">Returns</h4>
+<h4 id="_returns_9">Returns</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 40%;">
@@ -3720,20 +3721,20 @@ Create an image using docker file.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_inspect_image">Inspect Image</h3>
+<h3 id="_push_image">Push Image</h3>
 <div class="paragraph">
-<p><code>&lt;docker:inspect-image&gt;</code></p>
+<p><code>&lt;docker:push-image&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Inspect an image to get the low level information of the image.
+Push an image to registry.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_18">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:inspect-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:push-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config1</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span>   <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageTag</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image_tag</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3767,37 +3768,30 @@ Inspect an image to get the low level information of the image.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name to inspect.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the image to be pushed in the registry with registry URL like localhost:5000/ubuntu.</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag.</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag of the image that is to be pushed to registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">username</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Username of the private registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_returns_9">Returns</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 60%;">
-</colgroup>
-<thead>
 <tr>
-<th class="tableblock halign-left valign-middle">Return Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">InspectImageResponse</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Low-level information on the image name.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">password</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Password of the private registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
 </table>
@@ -3805,20 +3799,20 @@ Inspect an image to get the low level information of the image.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_remove_image">Remove Image</h3>
+<h3 id="_tag_image">Tag Image</h3>
 <div class="paragraph">
-<p><code>&lt;docker:remove-image&gt;</code></p>
+<p><code>&lt;docker:tag-image&gt;</code></p>
 </div>
 <div class="paragraph">
 <p>
-Delete the image with given image name or id.
+Tag a docker image.
 </p>
 </div>
 <div class="sect3">
 <h4 id="_xml_sample_19">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:remove-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">forceRemove</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">prune</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:tag-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config1</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">destImageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dest_image_name</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">destImagetag</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dest_tag</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageTag</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_image_tag</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">repository</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">localhost:5000</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
 </div>
 </div>
 </div>
@@ -3852,29 +3846,121 @@ Delete the image with given image name or id.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name that needs to be removed.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the source image</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag. @param imageTag Docker image tag.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag of the source image</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">destImageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the image to be reflected in registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">repository</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Repository URL</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">destImagetag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Tag of the image in registry</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_remove_image">Remove Image</h3>
+<div class="paragraph">
+<p><code>&lt;docker:remove-image&gt;</code></p>
+</div>
+<div class="paragraph">
+<p>
+Delete the image with given image name or ID.
+</p>
+</div>
+<div class="sect3">
+<h4 id="_xml_sample_20">XML Sample</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:remove-image</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">forceRemove</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">imageName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">ubuntu</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">prune</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_attributes_22">Attributes</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 35%;">
+<col style="width: 20%;">
+<col style="width: 5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Java Type</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Default Value</th>
+<th class="tableblock halign-center valign-middle">Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageName</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image name that needs to be removed</p></td>
+<td class="tableblock halign-left valign-middle"></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageTag</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Docker image tag</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">latest</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">forceRemove</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Boolean.html">Boolean</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Force remove image (optional parameter).</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Force remove image</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">prune</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Remove unnecessary options.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Do not delete untagged parent images</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">imageId</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Image ID of the docker image that needs to be removed</p></td>
+<td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 </tbody>
@@ -3893,7 +3979,7 @@ List the volumes.
 </p>
 </div>
 <div class="sect3">
-<h4 id="_xml_sample_20">XML Sample</h4>
+<h4 id="_xml_sample_21">XML Sample</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:list-volume</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">danglingFilter</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
@@ -3901,7 +3987,7 @@ List the volumes.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_attributes_22">Attributes</h4>
+<h4 id="_attributes_23">Attributes</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 20%;">
@@ -3961,63 +4047,6 @@ List the volumes.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_wait_for_a_container">Wait for A Container</h3>
-<div class="paragraph">
-<p><code>&lt;docker:wait-a-container&gt;</code></p>
-</div>
-<div class="paragraph">
-<p>
-Wait for a container with given name or id to execute.
-</p>
-</div>
-<div class="sect3">
-<h4 id="_xml_sample_21">XML Sample</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;docker:wait-a-container</span> <span class="attribute-name">config-ref</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker__HTTP_Docker_Config</span><span class="delimiter">&quot;</span></span>  <span class="attribute-name">doc:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Docker</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">containerName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">test_container</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span></code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_attributes_23">Attributes</h4>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 35%;">
-<col style="width: 20%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Name</th>
-<th class="tableblock halign-left valign-middle">Java Type</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Default Value</th>
-<th class="tableblock halign-center valign-middle">Required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">config-ref</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Specify which config to use</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the container that needs to wait.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_create_volume">Create Volume</h3>
 <div class="paragraph">
 <p><code>&lt;docker:create-volume&gt;</code></p>
@@ -4065,16 +4094,16 @@ Create new volume on docker.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">volumeName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the volume.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">The new volume's name</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">volumeDriver</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the driver.</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-<td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the volume driver to use</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">local</p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">driverOpts</p></td>
@@ -4157,7 +4186,7 @@ Inspect volume for low-level information on the given volume name.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">volumeName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the volume.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Volume name or ID</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
@@ -4235,7 +4264,7 @@ Operation to remove a volume.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">volumeName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name of the volume.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Volume name or ID</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
@@ -4256,7 +4285,7 @@ Operation to remove a volume.
 </div>
 <div class="paragraph">
 <p>
-Get logs from the container with given container name or container id.
+Get logs from the container with given container name or container ID.
 </p>
 </div>
 <div class="sect3">
@@ -4297,14 +4326,14 @@ Get logs from the container with given container name or container id.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">sourceCallback</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">SourceCallback</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">parameter to process the callback which represents the next message processor in the chain.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">parameter to process the callback which represents the next message processor in the chain</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or Id of the running container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or ID of the running container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
@@ -4332,21 +4361,21 @@ Get logs from the container with given container name or container id.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">showSince</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Show logs since timestamp or relative Minutes.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Show logs since timestamp or relative Minutes</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">10</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">tail</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">int</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Output specified number of lines at the end of logs.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Output specified number of lines at the end of logs</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">0</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">followStream</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Return stream. Default is set to false.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Follow the logs</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">false</p></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock">&#160;</p></td>
 </tr>
@@ -4383,7 +4412,7 @@ Get logs from the container with given container name or container id.
 </div>
 <div class="paragraph">
 <p>
-Get a live stream of a container's resource usage statistics.
+Get information of a container's resource usage statistics.
 </p>
 </div>
 <div class="sect3">
@@ -4416,14 +4445,14 @@ Get a live stream of a container's resource usage statistics.
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">sourceCallback</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">SourceCallback</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">parameter to process the callback which represents the next message processor in the chain.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Parameter to process the callback which represents the next message processor in the chain.</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">containerName</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html">String</a></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or Id of the container.</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Name or Id of the container</p></td>
 <td class="tableblock halign-left valign-middle"></td>
 <td class="tableblock halign-center valign-middle"><p class="tableblock"><strong>x</strong>&#160;</p></td>
 </tr>
