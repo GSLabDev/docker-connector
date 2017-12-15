@@ -1,12 +1,11 @@
 /**
  * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-/**
- * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license, a copy of which has been included with this distribution in the LICENSE.md file.
- */
-package org.mule.modules.docker.automation.functional;
+package org.mule.modules.docker.automation.functional.processors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +14,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
+import org.mule.modules.docker.automation.util.TestsConstants;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
-import static org.hamcrest.core.Is.*;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 
-public class WaitAContainerTestCases extends AbstractTestCase<DockerConnector> {
-    boolean removeVolumes = false;
-    boolean showSize = false;
-
+public class WaitAContainerTestCasesIT extends AbstractTestCase<DockerConnector> {
     CreateContainerResponse container = null;
 
-    public WaitAContainerTestCases() {
+    public WaitAContainerTestCasesIT() {
         super(DockerConnector.class);
     }
 
@@ -35,12 +31,17 @@ public class WaitAContainerTestCases extends AbstractTestCase<DockerConnector> {
     public void setup() {
         List<String> command = new ArrayList<String>();
         command.add("true");
-        container = getConnector().runContainer("busybox", "latest", "created-test-wait", command);
+        container = getConnector().runContainer(TestsConstants.IMAGE_NAME, TestsConstants.IMAGE_TAG, TestsConstants.WAIT_A_CONTAINER, command);
     }
 
     @After
     public void tearDown() {
-        getConnector().deleteContainer(container.getId(), true, removeVolumes);
+        try {
+            getConnector().killContainer(container.getId(), TestsConstants.KILL_CONTAINER_SIGNAL);
+        } catch (Exception e) {
+        } finally {
+            getConnector().deleteContainer(container.getId(), true, true);
+        }
     }
 
     @Test
@@ -48,10 +49,10 @@ public class WaitAContainerTestCases extends AbstractTestCase<DockerConnector> {
         assertNotNull(container.getId());
         getConnector().waitAContainer(container.getId());
 
-        InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(container.getId(), showSize);
+        InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(container.getId(), false);
 
         assertFalse(inspectContainerResponse.getState().getRunning());
-        assertThat(inspectContainerResponse.getState().getExitCode(), is(0));
+        assertTrue(inspectContainerResponse.getState().getExitCode() == 0);
     }
 
 }

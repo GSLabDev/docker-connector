@@ -1,60 +1,54 @@
 /**
  * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-/**
- * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license, a copy of which has been included with this distribution in the LICENSE.md file.
- */
-package org.mule.modules.docker.automation.functional;
+package org.mule.modules.docker.automation.functional.processors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
+import org.mule.modules.docker.automation.util.TestsConstants;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 
-public class StartContainerTestCases extends AbstractTestCase<DockerConnector> {
+public class StartContainerTestCasesIT extends AbstractTestCase<DockerConnector> {
 
     CreateContainerResponse container = null;
     InspectContainerResponse inspectContainerResponse = null;
-    java.lang.String imageName = "busybox", imageTag = "latest", containerName = "created-test-start", command = "top";
-    boolean showSize = false;
-    String signal = "SIGKILL";
-    boolean removeVolumes = false;
 
-    public StartContainerTestCases() {
+    public StartContainerTestCasesIT() {
         super(DockerConnector.class);
     }
 
     @Before
     public void setup() {
-        container = getConnector().createContainer(imageName, imageTag, containerName, null);
-        System.out.println("Created container " + container);
+        container = getConnector().createContainer(TestsConstants.IMAGE_NAME, TestsConstants.IMAGE_TAG, TestsConstants.START_CONTAINER, null);
     }
 
     @After
     public void tearDown() {
         try {
 
-            if (getConnector().inspectContainer(containerName,showSize).getState().getRunning()) {
-                getConnector().killContainer(containerName, signal);
+            if (getConnector().inspectContainer(TestsConstants.START_CONTAINER, false).getState().getRunning()) {
+                getConnector().killContainer(TestsConstants.START_CONTAINER, TestsConstants.KILL_CONTAINER_SIGNAL);
             }
         } catch (Exception e) {
-            e.printStackTrace();
 
         } finally {
-            getConnector().deleteContainer(containerName, true, removeVolumes);
+            getConnector().deleteContainer(TestsConstants.START_CONTAINER, true, true);
         }
     }
 
     @Test
-    public void verify() {
+    public void verifyStartContainer() {
         assertNotNull(container.getId());
         getConnector().startContainer(container.getId());
-        inspectContainerResponse = getConnector().inspectContainer(container.getId(), showSize);
+        inspectContainerResponse = getConnector().inspectContainer(container.getId(), false);
 
         assertNotNull(inspectContainerResponse.getConfig());
         assertNotNull(inspectContainerResponse.getId());

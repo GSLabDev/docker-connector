@@ -1,10 +1,7 @@
 /**
  * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-/**
- * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license, a copy of which has been included with this distribution in the LICENSE.md file.
- */
-package org.mule.modules.docker.automation.functional;
+package org.mule.modules.docker.automation.functional.processors;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -12,19 +9,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
+import org.mule.modules.docker.automation.util.TestsConstants;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.BadRequestException;
 
-public class CreateContainerTestCases extends AbstractTestCase<DockerConnector> {
-
-    java.lang.String imageName = "busybox", imageTag = "latest";
-    java.lang.Boolean removeVolumes = false, showSize = false, forceDelete = true;
+public class CreateContainerTestCasesIT extends AbstractTestCase<DockerConnector> {
     CreateContainerResponse createContainerResponse;
 
-    public CreateContainerTestCases() {
+    public CreateContainerTestCasesIT() {
         super(DockerConnector.class);
     }
 
@@ -32,7 +27,7 @@ public class CreateContainerTestCases extends AbstractTestCase<DockerConnector> 
     public void setp() throws InterruptedException {
 
         try {
-            getConnector().pullImage(imageName, imageTag, null, null);
+            getConnector().pullImage(TestsConstants.CREATE_CONTAINERS_IMAGE, TestsConstants.CREATE_CONTAINERS_IMAGE_TAG, null, null);
         } catch (Exception e) {
         }
     }
@@ -47,30 +42,25 @@ public class CreateContainerTestCases extends AbstractTestCase<DockerConnector> 
     }
 
     @Test
-    public void verifyDefault() {
-        String jsonFilePath = null, containerName = "create-container-test";
-        ;
-        createContainerResponse = getConnector().createContainer(imageName, imageTag, containerName, jsonFilePath);
+    public void verifyWithoutJsonFile() {
+        createContainerResponse = getConnector().createContainer(TestsConstants.CREATE_CONTAINERS_IMAGE, TestsConstants.CREATE_CONTAINERS_IMAGE_TAG, TestsConstants.CREATE_CONTAINER, null);
         assertNotNull(createContainerResponse.getId());
-        InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(containerName, showSize);
+        InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(TestsConstants.CREATE_CONTAINER, true);
         assertNotNull(inspectContainerResponse.getId());
     }
 
     @Test
-    public void verifyWithAll() {
-        String jsonFilePath = "src/test/resources/createContainer.json", containerName = null, imageName = null,
-                imageTag = null;
-        createContainerResponse = getConnector().createContainer(imageName, imageTag, containerName, jsonFilePath);
+    public void verifyWithJsonFile() {
+        createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
         assertNotNull(createContainerResponse.getId());
         InspectContainerResponse inspectContainerResponse = getConnector()
-                .inspectContainer(createContainerResponse.getId(), showSize);
+                .inspectContainer(createContainerResponse.getId(), true);
         assertNotNull(inspectContainerResponse.getId());
     }
 
     @Test(expected = BadRequestException.class)
     public void verifyWithNonExistingFile() {
-        String jsonFilePath = "notAFile.json", containerName = null, imageName = null, imageTag = null;
-        getConnector().createContainer(imageName, imageTag, containerName, jsonFilePath);
+        getConnector().createContainer(null, null, null, "notAFile.json");
     }
 
 }
