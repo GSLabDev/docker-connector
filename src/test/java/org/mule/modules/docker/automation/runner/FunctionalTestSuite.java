@@ -1,5 +1,5 @@
 /**
- * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license, a copy of which has been included with this distribution in the LICENSE.md file.
+ * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
 package org.mule.modules.docker.automation.runner;
 
@@ -9,43 +9,64 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.mule.modules.docker.DockerConnector;
-import org.mule.modules.docker.automation.functional.BuildImageTestCases;
-import org.mule.modules.docker.automation.functional.CreateContainerTestCases;
-import org.mule.modules.docker.automation.functional.CreateVolumeTestCases;
-import org.mule.modules.docker.automation.functional.DeleteContainerTestCases;
-import org.mule.modules.docker.automation.functional.DockerInfoTestCases;
-import org.mule.modules.docker.automation.functional.GetContainerLogsTestCases;
-import org.mule.modules.docker.automation.functional.GetContainerStatsTestCases;
-import org.mule.modules.docker.automation.functional.InspectContainerTestCases;
-import org.mule.modules.docker.automation.functional.InspectImageTestCases;
-import org.mule.modules.docker.automation.functional.InspectVolumeTestCases;
-import org.mule.modules.docker.automation.functional.KillContainerTestCases;
-import org.mule.modules.docker.automation.functional.ListContainersTestCases;
-import org.mule.modules.docker.automation.functional.ListImageTestCases;
-import org.mule.modules.docker.automation.functional.ListVolumeTestCases;
-import org.mule.modules.docker.automation.functional.PauseContainerTestCases;
-import org.mule.modules.docker.automation.functional.PullImageTestCases;
-import org.mule.modules.docker.automation.functional.PushImageTestCases;
-import org.mule.modules.docker.automation.functional.RemoveImageTestCases;
-import org.mule.modules.docker.automation.functional.RemoveVolumeTestCases;
-import org.mule.modules.docker.automation.functional.RestartContainerTestCases;
-import org.mule.modules.docker.automation.functional.RunContainerTestCases;
-import org.mule.modules.docker.automation.functional.StartContainerTestCases;
-import org.mule.modules.docker.automation.functional.StopContainerTestCases;
-import org.mule.modules.docker.automation.functional.TagImageTestCases;
-import org.mule.modules.docker.automation.functional.UnpauseContainerTestCases;
-import org.mule.modules.docker.automation.functional.WaitAContainerTestCases;
+import org.mule.modules.docker.automation.functional.processors.BuildImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.CreateContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.CreateVolumeTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.DeleteContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.DockerInfoTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.InspectContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.InspectImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.InspectVolumeTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.KillContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.ListContainersTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.ListImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.ListVolumeTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.PauseContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.PullImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.PushImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.RemoveImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.RemoveVolumeTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.RestartContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.RunContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.StartContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.StopContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.TagImageTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.UnpauseContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.processors.WaitAContainerTestCasesIT;
+import org.mule.modules.docker.automation.functional.sources.GetContainerLogsTestCasesIT;
+import org.mule.modules.docker.automation.functional.sources.GetContainerStatsTestCasesIT;
 import org.mule.tools.devkit.ctf.mockup.ConnectorTestContext;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CreateContainerTestCases.class, InspectContainerTestCases.class, DeleteContainerTestCases.class,
-        KillContainerTestCases.class, PauseContainerTestCases.class, RestartContainerTestCases.class,
-        RunContainerTestCases.class, StartContainerTestCases.class, StopContainerTestCases.class,
-        ListContainersTestCases.class, UnpauseContainerTestCases.class, WaitAContainerTestCases.class,
-        RemoveVolumeTestCases.class, CreateVolumeTestCases.class, InspectVolumeTestCases.class,
-        ListVolumeTestCases.class, PullImageTestCases.class, ListImageTestCases.class, BuildImageTestCases.class,
-        DockerInfoTestCases.class, InspectImageTestCases.class, PushImageTestCases.class, RemoveImageTestCases.class,
-        TagImageTestCases.class, GetContainerLogsTestCases.class, GetContainerStatsTestCases.class })
+@SuiteClasses({
+    BuildImageTestCasesIT.class,
+    CreateVolumeTestCasesIT.class,
+    DockerInfoTestCasesIT.class,
+    InspectContainerTestCasesIT.class,
+    StartContainerTestCasesIT.class,
+    StopContainerTestCasesIT.class,
+    RestartContainerTestCasesIT.class,
+    KillContainerTestCasesIT.class,
+    PauseContainerTestCasesIT.class,
+    UnpauseContainerTestCasesIT.class,
+    WaitAContainerTestCasesIT.class,
+    DeleteContainerTestCasesIT.class,
+    RunContainerTestCasesIT.class,
+    ListContainersTestCasesIT.class,
+    CreateContainerTestCasesIT.class,
+    GetContainerLogsTestCasesIT.class,
+    GetContainerStatsTestCasesIT.class,
+
+    InspectImageTestCasesIT.class,
+    InspectVolumeTestCasesIT.class,
+    ListImageTestCasesIT.class,
+    ListVolumeTestCasesIT.class,
+    PullImageTestCasesIT.class,
+    PushImageTestCasesIT.class,
+    RemoveImageTestCasesIT.class,
+    RemoveVolumeTestCasesIT.class,
+    TagImageTestCasesIT.class
+})
 
 public class FunctionalTestSuite {
 
