@@ -1,0 +1,77 @@
+////
+The following is the approved connector release notes template for documenting MuleSoft Supported Connectors.
+////
+
+= Docker Connector Release Notes
+////
+Docker : The system the connector connects to, at the other end of the mule runtime, i.e. SalesForce, Workday Financials]
+////
+:keywords: add_keywords_separated_by_commas
+
+
+
+
+The Anypoint Connector for Docker lets you connect to the docker engine and docker registry. The connector exposes convenient methods for exploiting the capabilities of Docker.
+
+The connector executes API calls targeting Docker’s REST API depending on you configuration. The API calls use an JSON request/response over HTTP and HTTPS connection. All required request HTTP and HTTPS connection configurations are abstracted and built into the connector.
+
+Read through this user guide to understand how to set up and configure a basic flow using the connector. Track feature additions, compatibility, limitations, and API version updates using the Docker Connector Release Notes. Review the connector operations and see how they work by reviewing the Technical Reference alongside the Demo Applications.
+
+link:docker-connector-user-manual.adoc[Docker Connector User Guide]
+////
+Points to the docs.mulesoft pages for documentation on the functional aspects of the connector. e.g.: link:/mule-user-guide/v/3.7/microsoft-sharepoint-2013-connector[Microsoft SharePoint 2013 Connector]
+////
+
+== Docker connector V1.0 - December 18, 2017
+
+=== Version V1.0 Compatibility
+
+[width="100%", cols=",", options="header"]
+|===
+|Software |Version
+|Mule Runtime | 3.8.5 
+|Docker| 1.24
+|===
+
+=== Features
+
+. TLS support with docker engine
+. Supports multiple APIs of docker like image  images, container, volumes, and statistics.
+** Docker Info
+** Pull Image
+** Create Container
+** Start Container
+** Stop Container
+** Inspect Container
+** Run Container
+** Get Container Logs
+** Get Container Statistics
+** Restart Container
+** Kill Container
+** Pause Container
+** Unpause Container
+** Delete Container
+** List Images
+** Build Image from Docker File
+** Inspect Image
+** Remove Image
+** List Volumes
+** Wait for A Container
+** Create Volume
+** Inspect Volume
+** Remove Volume
+** Tag Image
+** Push Image
+
+//Example of a Feature listing:
+
+//NTLM Authentication - NTLM authentication is now more robust and widely compatible with more domain controller configurations.
+
+
+=== Support Resources
+////
+could also be named See Also
+////
+* Learn how to link:/mule-user-guide/v/3.7/installing-connectors[Install Anypoint Connectors] using Anypoint Exchange.
+* Access MuleSoft’ link:http://forum.mulesoft.org/mulesoft[Forum] to pose questions and get help from Mule’s broad community of users.
+* To access MuleSoft’s expert support team, link:http://www.mulesoft.com/mule-esb-subscription[subscribe] to Mule ESB Enterprise and log in to MuleSoft’s link:http://www.mulesoft.com/support-login[Customer Portal].
