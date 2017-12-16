@@ -17,7 +17,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.BadRequestException;
 
 public class CreateContainerTestCasesIT extends AbstractTestCase<DockerConnector> {
-    CreateContainerResponse createContainerResponse;
+    private CreateContainerResponse createContainerResponse;
 
     public CreateContainerTestCasesIT() {
         super(DockerConnector.class);
