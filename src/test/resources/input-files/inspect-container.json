@@ -1,0 +1,202 @@
+{
+    "Id": "3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879",
+    "Created": "2017-11-03T05:24:17.444188973Z",
+    "Path": "/entrypoint.sh",
+    "Args": [
+        "/etc/docker/registry/config.yml"
+    ],
+    "State": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 23228,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2017-12-12T08:12:08.67847182Z",
+        "FinishedAt": "2017-12-11T11:33:27.061913515Z"
+    },
+    "Image": "sha256:2ba7189700c85d74be0a5dbff0a4acd5e0787dcae9776a5575b54c8c86b7302c",
+    "ResolvConfPath": "/var/lib/docker/containers/3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879/resolv.conf",
+    "HostnamePath": "/var/lib/docker/containers/3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879/hostname",
+    "HostsPath": "/var/lib/docker/containers/3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879/hosts",
+    "LogPath": "/var/lib/docker/containers/3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879/3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879-json.log",
+    "Name": "/registry",
+    "RestartCount": 0,
+    "Driver": "aufs",
+    "MountLabel": "",
+    "ProcessLabel": "",
+    "AppArmorProfile": "docker-default",
+    "ExecIDs": null,
+    "HostConfig": {
+        "Binds": null,
+        "ContainerIDFile": "",
+        "LogConfig": {
+            "Type": "json-file",
+            "Config": {}
+        },
+        "NetworkMode": "default",
+        "PortBindings": {
+            "5000/tcp": [
+                {
+                    "HostIp": "",
+                    "HostPort": "5000"
+                }
+            ]
+        },
+        "RestartPolicy": {
+            "Name": "always",
+            "MaximumRetryCount": 0
+        },
+        "AutoRemove": false,
+        "VolumeDriver": "",
+        "VolumesFrom": null,
+        "CapAdd": null,
+        "CapDrop": null,
+        "Dns": [],
+        "DnsOptions": [],
+        "DnsSearch": [],
+        "ExtraHosts": null,
+        "GroupAdd": null,
+        "IpcMode": "",
+        "Cgroup": "",
+        "Links": null,
+        "OomScoreAdj": 0,
+        "PidMode": "",
+        "Privileged": false,
+        "PublishAllPorts": false,
+        "ReadonlyRootfs": false,
+        "SecurityOpt": null,
+        "UTSMode": "",
+        "UsernsMode": "",
+        "ShmSize": 67108864,
+        "Runtime": "runc",
+        "ConsoleSize": [
+            0,
+            0
+        ],
+        "Isolation": "",
+        "CpuShares": 0,
+        "Memory": 0,
+        "NanoCpus": 0,
+        "CgroupParent": "",
+        "BlkioWeight": 0,
+        "BlkioWeightDevice": null,
+        "BlkioDeviceReadBps": null,
+        "BlkioDeviceWriteBps": null,
+        "BlkioDeviceReadIOps": null,
+        "BlkioDeviceWriteIOps": null,
+        "CpuPeriod": 0,
+        "CpuQuota": 0,
+        "CpuRealtimePeriod": 0,
+        "CpuRealtimeRuntime": 0,
+        "CpusetCpus": "",
+        "CpusetMems": "",
+        "Devices": [],
+        "DeviceCgroupRules": null,
+        "DiskQuota": 0,
+        "KernelMemory": 0,
+        "MemoryReservation": 0,
+        "MemorySwap": 0,
+        "MemorySwappiness": -1,
+        "OomKillDisable": false,
+        "PidsLimit": 0,
+        "Ulimits": null,
+        "CpuCount": 0,
+        "CpuPercent": 0,
+        "IOMaximumIOps": 0,
+        "IOMaximumBandwidth": 0
+    },
+    "GraphDriver": {
+        "Data": null,
+        "Name": "aufs"
+    },
+    "Mounts": [
+        {
+            "Type": "volume",
+            "Name": "8d6389ebc566f75002011ab9766e50379dd2e343ab946d6fd00c9e5721b04e34",
+            "Source": "/var/lib/docker/volumes/8d6389ebc566f75002011ab9766e50379dd2e343ab946d6fd00c9e5721b04e34/_data",
+            "Destination": "/var/lib/registry",
+            "Driver": "local",
+            "Mode": "",
+            "RW": true,
+            "Propagation": ""
+        }
+    ],
+    "Config": {
+        "Hostname": "3d1513232897",
+        "Domainname": "",
+        "User": "",
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "AttachStderr": false,
+        "ExposedPorts": {
+            "5000/tcp": {}
+        },
+        "Tty": false,
+        "OpenStdin": false,
+        "StdinOnce": false,
+        "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "Cmd": [
+            "/etc/docker/registry/config.yml"
+        ],
+        "ArgsEscaped": true,
+        "Image": "registry:2",
+        "Volumes": {
+            "/var/lib/registry": {}
+        },
+        "WorkingDir": "",
+        "Entrypoint": [
+            "/entrypoint.sh"
+        ],
+        "OnBuild": null,
+        "Labels": {}
+    },
+    "NetworkSettings": {
+        "Bridge": "",
+        "SandboxID": "1b4c404fc38e024cdff39250a78a90e4e58f9b6d4473fc733b19fd1e70c572bd",
+        "HairpinMode": false,
+        "LinkLocalIPv6Address": "",
+        "LinkLocalIPv6PrefixLen": 0,
+        "Ports": {
+            "5000/tcp": [
+                {
+                    "HostIp": "0.0.0.0",
+                    "HostPort": "5000"
+                }
+            ]
+        },
+        "SandboxKey": "/var/run/docker/netns/1b4c404fc38e",
+        "SecondaryIPAddresses": null,
+        "SecondaryIPv6Addresses": null,
+        "EndpointID": "de0cbdc1ac7d414f8774ed55f430751df0592d04c177d45cb5fdaf031ef4d9b4",
+        "Gateway": "172.17.0.1",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "IPAddress": "172.17.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "MacAddress": "02:42:ac:11:00:02",
+        "Networks": {
+            "bridge": {
+                "IPAMConfig": null,
+                "Links": null,
+                "Aliases": null,
+                "NetworkID": "f968668e63af5c8afd1150faa9ff17d10eee18e31753effb689d43e59684adb7",
+                "EndpointID": "de0cbdc1ac7d414f8774ed55f430751df0592d04c177d45cb5fdaf031ef4d9b4",
+                "Gateway": "172.17.0.1",
+                "IPAddress": "172.17.0.2",
+                "IPPrefixLen": 16,
+                "IPv6Gateway": "",
+                "GlobalIPv6Address": "",
+                "GlobalIPv6PrefixLen": 0,
+                "MacAddress": "02:42:ac:11:00:02",
+                "DriverOpts": null
+            }
+        }
+    }
+}

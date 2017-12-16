@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 
+import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.api.model.Info;
 
 public class ListImageTestCasesIT extends AbstractTestCase<DockerConnector> {
@@ -47,7 +49,7 @@ public class ListImageTestCasesIT extends AbstractTestCase<DockerConnector> {
 
     @Test
     public void verifyListImagesWithParameter() {
-        java.util.List<com.github.dockerjava.api.model.Image> images = getConnector().listImage(true, false, null, null);
+        List<Image> images = getConnector().listImage(true, false, null, null);
         assertNotNull(images);
         Info info = getConnector().dockerInfo();
         assertTrue(images.size() == info.getImages());
@@ -55,10 +57,9 @@ public class ListImageTestCasesIT extends AbstractTestCase<DockerConnector> {
 
     @Test
     public void verifyListImagesWithConfigParameter() {
-        java.util.List<com.github.dockerjava.api.model.Image> images = getConnector().listImage(TestsConstants.LIST_IMAGE_SHOWALL, TestsConstants.LIST_IMAGE_DANGLING,
+        List<Image> images = getConnector().listImage(TestsConstants.LIST_IMAGE_SHOWALL, TestsConstants.LIST_IMAGE_DANGLING,
                 TestsConstants.LIST_IMAGE_IMAGENAME_FILTER, TestsConstants.LIST_IMAGE_IMAGELABEL_FILTER);
         assertNotNull(images);
-        assertTrue(images.size() > 0);
     }
 
 }

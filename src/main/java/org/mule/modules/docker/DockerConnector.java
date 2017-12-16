@@ -231,7 +231,7 @@ public class DockerConnector {
      *            Name or ID of the container to be stopped (Container is
      *            initially in start state).
      * @param timeout
-     *            Number of seconds to wait before killing the container
+     *            Number of seconds to wait before stopping the container
      */
     @Processor(friendlyName = "Stop Container")
     public void stopContainer(final String containerName, @Default("0") final int timeout) {
@@ -244,7 +244,7 @@ public class DockerConnector {
      * @param containerName
      *            Name or ID of the running container
      * @param timeout
-     *            Number of seconds to wait before killing the container
+     *            Number of seconds to wait before restarting the container
      */
     @Processor(friendlyName = "Restart Container")
     public void restartContainer(final String containerName, @Default("0") int timeout) {

@@ -7,9 +7,12 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,13 +28,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * JsonParametersProcessor is used to process input JSON file. This class
- * deserialize input JSON to POJO class and set docker CMD parameters. This
- * class uses JsonNameStrategy while deserialization of JSON to pojo class.
+ * JsonParametersProcessor is used to process input JSON file. This class deserialize input JSON to POJO class and set docker CMD parameters. This class uses JsonNameStrategy while
+ * deserialization of JSON to pojo class.
  *
  */
 
 public class JsonParametersProcessor {
+
     private static final Logger logger = LogManager.getLogger(JsonParametersProcessor.class.getName());
 
     private JsonParametersProcessor() {
@@ -64,7 +67,7 @@ public class JsonParametersProcessor {
     }
 
     /**
-     * Deserialize JSON to POJO class. 
+     * Deserialize JSON to POJO class.
      * 
      * @param filePath
      *            Path of the JSON file
@@ -77,7 +80,9 @@ public class JsonParametersProcessor {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.setPropertyNamingStrategy(new JsonNameStrategy());
-        return mapper.readValue(new FileReader(filePath), pojoClass);
+        InputStream inputStream = new FileInputStream(filePath);
+        Reader fileReader = new InputStreamReader(inputStream, "UTF-8");
+        return mapper.readValue(fileReader, pojoClass);
     }
 
     /**
@@ -92,8 +97,7 @@ public class JsonParametersProcessor {
      * @throws InvocationTargetException
      * @throws IntrospectionException
      */
-    private static Object setCmdParameters(Object dockerCmd, Object pojo)
-            throws IllegalAccessException, InvocationTargetException, IntrospectionException {
+    private static Object setCmdParameters(Object dockerCmd, Object pojo) throws IllegalAccessException, InvocationTargetException, IntrospectionException {
 
         BeanInfo info = Introspector.getBeanInfo(pojo.getClass());
         String attributeName = null;
@@ -103,7 +107,9 @@ public class JsonParametersProcessor {
             if (reader != null && !"getClass".equals(reader.getName())) {
                 attributeName = Character.toUpperCase(pd.getName().charAt(0)) + pd.getName().substring(1);
                 parameter = reader.invoke(pojo);
-                setParameter(dockerCmd, attributeName, parameter);
+                if (parameter != null) {
+                    setParameter(dockerCmd, attributeName, parameter);
+                }
             }
         }
         return dockerCmd;
@@ -111,6 +117,7 @@ public class JsonParametersProcessor {
 
     /**
      * Set docker CMD parameters.
+     * 
      * @param dockerCmd
      *            Docker command object to set CMD parameters
      * @param attributeName
@@ -121,7 +128,7 @@ public class JsonParametersProcessor {
     private static void setParameter(Object dockerCmd, String attributeName, Object parameter) {
         logger.debug("Getting method for : " + attributeName + " with value" + parameter);
         Method method = getMethod(dockerCmd, attributeName, parameter);
-        if (method != null && parameter != null) {
+        if (method != null) {
             try {
                 method.invoke(dockerCmd, parameter);
                 logger.info("Set:" + attributeName + " with value " + parameter);
@@ -133,6 +140,7 @@ public class JsonParametersProcessor {
 
     /**
      * Get docker method of attribute name
+     * 
      * @param dockerCmd
      *            Docker command object used to search attribute method
      * @param attributeName
@@ -148,8 +156,7 @@ public class JsonParametersProcessor {
             method = dockerCmd.getClass().getDeclaredMethod("with" + attributeName, parameterClass);
         } catch (NoSuchMethodException | SecurityException e) {
             logger.error(e.getMessage(), e);
-            logger.warn("Method not found for:" + attributeName + " With value:" + parameterValue + " Of type"
-                    + parameterClass);
+            logger.warn("Method not found for:" + attributeName + " With value:" + parameterValue + " Of type" + parameterClass);
         }
         return method;
 
@@ -157,6 +164,7 @@ public class JsonParametersProcessor {
 
     /**
      * Get appropriate class for parameter value
+     * 
      * @param parameterValue
      *            Parameter value used to search method in docker command class
      * @return Type of the parameter value class
