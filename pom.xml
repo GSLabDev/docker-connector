@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -20,10 +22,24 @@
 		<licensePath>LICENSE.md</licensePath>
 		<devkit.studio.package.skip>false</devkit.studio.package.skip>
 		<dockerJavaClientVersion>3.0.11</dockerJavaClientVersion>
+		<powermock.version>1.7.1</powermock.version>
 		<junixsocketCommonVersion>2.0.2</junixsocketCommonVersion>
-		<commonsCompress>1.5</commonsCompress>
 		<jerseyApacheConnectorVersion>2.13</jerseyApacheConnectorVersion>
 	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>mule-ee-releases</id>
+			<name>MuleEE Releases Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+		</repository>
+		<snapshotRepository>
+			<id>mule-ee-snapshots</id>
+			<name>MuleEE Snapshots Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -31,7 +47,18 @@
 			<artifactId>docker-java</artifactId>
 			<version>${dockerJavaClientVersion}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4-legacy</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito2</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.connectors</groupId>
 			<artifactId>jersey-apache-connector</artifactId>
@@ -43,8 +70,30 @@
 			<artifactId>junixsocket-common</artifactId>
 			<version>${junixsocketCommonVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.7.3</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.20.1</version>
+				<configuration>
+					<includes>
+						<include>UnitTestSuite.java</include>
+					</includes>
+					<excludes>
+						<exclude>FunctionalTestSuite.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>mulesoft-releases</id>

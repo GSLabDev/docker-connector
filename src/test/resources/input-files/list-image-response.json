@@ -1,0 +1,16 @@
+ {
+        "Containers": -1,
+        "Created": 1510955965,
+        "Id": "sha256:20c44cd7596ff4807aef84273c99588d22749e2a7e15a7545ac96347baa65eda",
+        "Labels": null,
+        "ParentId": "",
+        "RepoDigests": [
+            "ubuntu@sha256:7c67a2206d3c04703e5c23518707bdd4916c057562dd51c74b99b2ba26af0f79"
+        ],
+        "RepoTags": [
+            "ubuntu:latest"
+        ],
+        "SharedSize": -1,
+        "Size": 122792927,
+        "VirtualSize": 122792927
+    }

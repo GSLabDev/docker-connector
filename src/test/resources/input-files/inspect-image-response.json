@@ -1,0 +1,84 @@
+{
+    "Id": "sha256:20c44cd7596ff4807aef84273c99588d22749e2a7e15a7545ac96347baa65eda",
+    "RepoTags": [
+        "ubuntu:latest"
+    ],
+    "RepoDigests": [
+        "ubuntu@sha256:7c67a2206d3c04703e5c23518707bdd4916c057562dd51c74b99b2ba26af0f79"
+    ],
+    "Parent": "",
+    "Comment": "",
+    "Created": "2017-11-17T21:59:25.014645802Z",
+    "Container": "e5f1a9df75b86a5d803eaf6f3fed6a0f8ef5fbf15a6c5039df087e4348ed8171",
+    "ContainerConfig": {
+        "Hostname": "e5f1a9df75b8",
+        "Domainname": "",
+        "User": "",
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "AttachStderr": false,
+        "Tty": false,
+        "OpenStdin": false,
+        "StdinOnce": false,
+        "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "Cmd": [
+            "/bin/sh",
+            "-c",
+            "#(nop) ",
+            "CMD [\"/bin/bash\"]"
+        ],
+        "ArgsEscaped": true,
+        "Image": "sha256:b5771e7d8dcc594b886dbdd6a9c3de60d45252ca657dfdff6e1d996728dfa2cd",
+        "Volumes": null,
+        "WorkingDir": "",
+        "Entrypoint": null,
+        "OnBuild": null,
+        "Labels": {}
+    },
+    "DockerVersion": "17.06.2-ce",
+    "Author": "",
+    "Config": {
+        "Hostname": "",
+        "Domainname": "",
+        "User": "",
+        "AttachStdin": false,
+        "AttachStdout": false,
+        "AttachStderr": false,
+        "Tty": false,
+        "OpenStdin": false,
+        "StdinOnce": false,
+        "Env": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "Cmd": [
+            "/bin/bash"
+        ],
+        "ArgsEscaped": true,
+        "Image": "sha256:b5771e7d8dcc594b886dbdd6a9c3de60d45252ca657dfdff6e1d996728dfa2cd",
+        "Volumes": null,
+        "WorkingDir": "",
+        "Entrypoint": null,
+        "OnBuild": null,
+        "Labels": null
+    },
+    "Architecture": "amd64",
+    "Os": "linux",
+    "Size": 122792927,
+    "VirtualSize": 122792927,
+    "GraphDriver": {
+        "Data": null,
+        "Name": "aufs"
+    },
+    "RootFS": {
+        "Type": "layers",
+        "Layers": [
+            "sha256:788ce2310e2fdbbf81fe21cbcc8a44da4cf648b0339b09c221abacb4cd5fd136",
+            "sha256:aa4e47c4511638484cd5d95eadd7a8e4da307375ba31ff50d47aa9065dce01e0",
+            "sha256:b3968bc26fbd527f214f895aeef940a6930c62d853fe8b12bd479f0b53518150",
+            "sha256:c9748fbf541d3e043521e165b015d45825de33c00a8acb037443cfbd0cb5e677",
+            "sha256:2f5b0990636a87f1557d64ba39808dcd64031328b2a159c5805115b8e725bbbc"
+        ]
+    }
+}

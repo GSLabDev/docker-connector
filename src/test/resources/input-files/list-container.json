@@ -1,0 +1,56 @@
+
+    {
+        "Id": "3d1513232897711a70038e1147b88f2a7872079890e92402b01ef56ddf658879",
+        "Names": [
+            "/registry"
+        ],
+        "Image": "registry:2",
+        "ImageID": "sha256:2ba7189700c85d74be0a5dbff0a4acd5e0787dcae9776a5575b54c8c86b7302c",
+        "Command": "/entrypoint.sh /etc/docker/registry/config.yml",
+        "Created": 1509686657,
+        "Ports": [
+            {
+                "IP": "0.0.0.0",
+                "PrivatePort": 5000,
+                "PublicPort": 5000,
+                "Type": "tcp"
+            }
+        ],
+        "Labels": {},
+        "State": "running",
+        "Status": "Up 21 hours",
+        "HostConfig": {
+            "NetworkMode": "default"
+        },
+        "NetworkSettings": {
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "552ae1b746c8ee2dae70913a3cfca49dbc2c98da6f575f2a66595b8e47784b17",
+                    "EndpointID": "24c23394d495ec21e38d3ebcb755915fcc3d17becb4a8d8134c535fb0aca3ae9",
+                    "Gateway": "172.17.0.1",
+                    "IPAddress": "172.17.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "MacAddress": "02:42:ac:11:00:02",
+                    "DriverOpts": null
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "8d6389ebc566f75002011ab9766e50379dd2e343ab946d6fd00c9e5721b04e34",
+                "Source": "/var/lib/docker/volumes/8d6389ebc566f75002011ab9766e50379dd2e343ab946d6fd00c9e5721b04e34/_data",
+                "Destination": "/var/lib/registry",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ]
+    }

@@ -77,12 +77,7 @@ public class DockerContainerOperations {
 
         List<Container> containerList;
         logger.info("Getting container list from docker");
-        final ListContainersCmd listContainerResponse = dockerClient.listContainersCmd();
-        if (showAll) {
-            logger.info("showall");
-            listContainerResponse.withShowAll(showAll);
-            logger.info("showALL executed");
-        }
+        final ListContainersCmd listContainerResponse = dockerClient.listContainersCmd().withShowAll(showAll).withShowSize(showSize);
         if (before != null) {
             logger.info("Before");
             listContainerResponse.withBefore(before);
@@ -92,11 +87,6 @@ public class DockerContainerOperations {
             logger.info("limit");
             listContainerResponse.withLimit(limit);
             logger.info("limit executed");
-        }
-        if (showSize) {
-            logger.info("Showsize");
-            listContainerResponse.withShowSize(showSize);
-            logger.info("showSize executed");
         }
         if (status != null) {
             logger.info("status value : " + status);
@@ -157,7 +147,7 @@ public class DockerContainerOperations {
      *            Name or ID of the container to be stopped (Container is
      *            initially in start state).
      * @param timeout
-     *            Number of seconds to wait before killing the container
+     *            Number of seconds to wait before stopping the container
      */
     public void stopContainerImpl(final String containerName, final int timeout) {
         logger.info("Stopping Container " + containerName);
@@ -275,7 +265,7 @@ public class DockerContainerOperations {
      * @param containerName
      *            Name or ID of the running container
      * @param timeout
-     *            Number of seconds to wait before killing the container
+     *            Number of seconds to wait before restarting the container
      */
     public void restartContainerImpl(final String containerName, final int timeout) {
         logger.info("Restarting Container " + containerName);

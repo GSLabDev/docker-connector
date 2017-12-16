@@ -1,6 +1,5 @@
 package org.mule.modules.docker.automation.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +58,7 @@ public class TestsConstants {
     public static final String CREATE_CONTAINER = "create-container-name";
     public static final String CREATE_CONTAINERS_IMAGE = "busybox";
     public static final String CREATE_CONTAINERS_IMAGE_TAG = "latest";
-    public static final String CREATE_CONTAINERS_JSON_FILE_PATH = "src/test/resources/create-container.json";
+    public static final String CREATE_CONTAINERS_JSON_FILE_PATH = "src/test/resources/input-files/create-container.json";
 
     public static final String GET_CONTAINER_LOG = "get-container-name-logs";
     public static final String GET_CONTAINER_LOG_IMAGE = "busybox";
@@ -73,45 +72,9 @@ public class TestsConstants {
 
     public static final String GET_CONTAINER_STATS = "get-container-stats-name";
 
-    public static final String BUILD_IMAGE_dockerFilePath = "src/test/resources/Dockerfile";
-    public static final String BUILD_IMAGE_cpuSet = null;
-    public static final String BUILD_IMAGE_cpuShares = null;
-    public static final String BUILD_IMAGE_buildArgumetName = null;
-    public static final String BUILD_IMAGE_buildArgumetValue = null;
-    public static final String BUILD_IMAGE_remoteURI = null;
-
-    public static final Map<String, String> BUILD_IMAGE_labels = null;
-    public static final long BUILD_IMAGE_memory = 0, BUILD_IMAGE_memswap = 0;
-    public static final List<String> BUILD_IMAGE_cacheFromImage = new ArrayList<String>();
-    public static final Boolean BUILD_IMAGE_noCache = true;
-    public static final boolean BUILD_IMAGE_forcerm = true;
-    public static final boolean BUILD_IMAGE_pullImage = false;
-    public static final boolean BUILD_IMAGE_removeContainers = true;
-
-    public static final String CREATE_VOLUME_volumeName = "volume1";
-    public static final String CREATE_VOLUME_volumeDriver = "local";
-    public static final String INSPECT_IMAGE_imageName = "busybox";
-    public static final String INSPECT_IMAGE_imageTag = "latest";
-
-    public static final String INSPECT_VOLUME_volumeName = "Testvolume";
-
-    public static final boolean LIST_VOLUME_danglingFilter = false;
-
-    public static final String PULL_IMAGE_imageName = "ubuntu";
-    public static final String PULL_IMAGE_imageTag = "latest";
-    public static final String PULL_IMAGE_username = "username";
-    public static final String PULL_IMAGE_password = "password";
-
-    public static final String PUSH_IMAGE_imageName = "busybox";
-    public static final String PUSH_IMAGE_imageTag = "latest";
-    public static final String PUSH_IMAGE_repository = "localhost:5000";
-    public static final String PUSH_IMAGE_destImageName = "test-tag-image";
-    public static final String PUSH_IMAGE_destImagetag = "test";
-
-    public static final boolean PUSH_IMAGE_prune = false;
-
     public static final String REMOVE_IMAGE_IMAGENAME = "hackmann/empty";
     public static final String REMOVE_IMAGE_IMAGETAG = "latest";
+    public static final String REMOVE_IMAGE_IMAGEID = "4568897";
     public static final boolean REMOVE_IMAGE_FORCE_REMOVE = true;
 
     public static final String REMOVE_VOLUME_volumeName = "created-test-remove";
@@ -122,12 +85,12 @@ public class TestsConstants {
     public static final String TAG_IMAGE_DEST_IMAGE_NAME = "test-tag-image";
     public static final String TAG_IMAGE_DEST_IMAGE_TAG = "test";
 
-    public static final String BUILD_IMAGE_DOCKERFILE_PATH = "src/test/resources/Dockerfile";
+    public static final String BUILD_IMAGE_DOCKERFILE_PATH = "src/test/resources/input-files/Dockerfile";
     public static final String BUILD_IMAGE_CPUSET = "0";
     public static final String BUILD_IMAGE_CPUSHARES = "40";
     public static final String BUILD_IMAGE_BUILDARGUMET_NAME = "HTTP_PROXY";
     public static final String BUILD_IMAGE_BUILDARGUMET_VALUE = "http://localhost:5000";
-    public static final String BUILD_IMAGE_REMOTEURI = null;
+    public static final String BUILD_IMAGE_REMOTEURI = "";
     public static final Map<String, String> BUILD_IMAGE_LABELS = new HashMap<String, String>() {
 
         {
@@ -144,7 +107,8 @@ public class TestsConstants {
     public static final boolean BUILD_IMAGE_FORCERM = true;
     public static final boolean BUILD_IMAGE_PULLIMAGE = true;
     public static final boolean BUILD_IMAGE_REMOVE_CONTAINERS = true;
-
+    
+    
     public static final String CREATE_VOLUME_VOLUMENAME = "volume1";
     public static final String CREATE_VOLUME_VOLUMEDRIVER = "local";
     public static final Map<String, String> CREATE_VOLUME_DRIVEROPTS = new HashMap<String, String>() {
@@ -187,8 +151,8 @@ public class TestsConstants {
     public static final boolean LIST_IMAGE_REMOVE_CONTAINERS = true;
     public static final boolean LIST_IMAGE_SHOWALL = true;
     public static final boolean LIST_IMAGE_DANGLING = false;
-    public static final String LIST_IMAGE_IMAGENAME_FILTER = null;
-    public static final String LIST_IMAGE_IMAGELABEL_FILTER = null;
+    public static final String LIST_IMAGE_IMAGENAME_FILTER = "list-image-filter";
+    public static final String LIST_IMAGE_IMAGELABEL_FILTER = "image-label-filter";
     public static final Map<String, String> LIST_IMAGE_LABELS = new HashMap<String, String>() {
 
         {
@@ -199,7 +163,7 @@ public class TestsConstants {
     public static final List<String> LIST_IMAGE_IMAGE_TAGS = Collections.unmodifiableList(Arrays.asList(new String[] {
         "created-list-image-test:latest"
     }));
-    public static final String LIST_IMAGE_DOCKERFILE_PATH = "src/test/resources/Dockerfile";
+    public static final String LIST_IMAGE_DOCKERFILE_PATH = "src/test/resources/input-files/Dockerfile";
     public static final String LIST_IMAGE_CPUSET = null;
     public static final String LIST_IMAGE_CPUSHARES = null;
     public static final String LIST_IMAGE_BUILDARGUMENT_NAME = null;

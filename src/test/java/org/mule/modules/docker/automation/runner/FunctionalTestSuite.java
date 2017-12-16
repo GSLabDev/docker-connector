@@ -56,7 +56,6 @@ import org.mule.tools.devkit.ctf.mockup.ConnectorTestContext;
     CreateContainerTestCasesIT.class,
     GetContainerLogsTestCasesIT.class,
     GetContainerStatsTestCasesIT.class,
-
     InspectImageTestCasesIT.class,
     InspectVolumeTestCasesIT.class,
     ListImageTestCasesIT.class,
