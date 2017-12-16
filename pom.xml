@@ -36,7 +36,7 @@
 		<snapshotRepository>
 			<id>mulesoft-snapshots</id>
 			<name>MuleSoft Snapshot Repository</name>
-			<url>http://repository-master.mulesoft.org/releases/</url>
+			<url>http://repository-master.mulesoft.org/snapshots/</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
