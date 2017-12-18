@@ -2,9 +2,10 @@ package org.mule.modules.docker.automation.util;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 
 public class TestsConstants {
 
@@ -91,13 +92,7 @@ public class TestsConstants {
     public static final String BUILD_IMAGE_BUILDARGUMET_NAME = "HTTP_PROXY";
     public static final String BUILD_IMAGE_BUILDARGUMET_VALUE = "http://localhost:5000";
     public static final String BUILD_IMAGE_REMOTEURI = "";
-    public static final Map<String, String> BUILD_IMAGE_LABELS = new HashMap<String, String>() {
-
-        {
-            put("TestKey1", "TestValue1");
-            put("TestKey2", "TestValue2");
-        }
-    };
+    public static final Map<String, String> BUILD_IMAGE_LABELS = ImmutableMap.of("TestKey1", "TestValue1", "TestKey2", "TestValue2");
     public static final long BUILD_IMAGE_MEMORY = 5000000;
     public static final long BUILD_IMAGE_MEMSWAP = 6000000;
     public static final List<String> BUILD_IMAGE_CACHE_FROM_IMAGE = Collections.unmodifiableList(Arrays.asList(new String[] {
@@ -107,69 +102,32 @@ public class TestsConstants {
     public static final boolean BUILD_IMAGE_FORCERM = true;
     public static final boolean BUILD_IMAGE_PULLIMAGE = true;
     public static final boolean BUILD_IMAGE_REMOVE_CONTAINERS = true;
-    
-    
+
     public static final String CREATE_VOLUME_VOLUMENAME = "volume1";
     public static final String CREATE_VOLUME_VOLUMEDRIVER = "local";
-    public static final Map<String, String> CREATE_VOLUME_DRIVEROPTS = new HashMap<String, String>() {
-
-        {
-            put("type", "tmpfs");
-        }
-    };
+    public static final Map<String, String> CREATE_VOLUME_DRIVEROPTS = ImmutableMap.of("type", "tmpfs");
 
     public static final String INSPECT_IMAGE_IMAGENAME = "busybox";
     public static final String INSPECT_IMAGE_IMAGETAG = "latest";
 
     public static final String INSPECT_VOLUME_VOLUME_NAME = "testVolume";
     public static final String INSPECT_VOLUME_VOLUMEDRIVER = "local";
-    public static final Map<String, String> INSPECT_VOLUME_DRIVEROPTS = new HashMap<String, String>() {
-
-        {
-            put("type", "tmpfs");
-        }
-    };
+    public static final Map<String, String> INSPECT_VOLUME_DRIVEROPTS = ImmutableMap.of("type", "tmpfs");
 
     public static final String LIST_VOLUME_VOLUME_NAME = "volume1";
     public static final String LIST_VOLUME_VOLUMEDRIVER = "local";
     public static final boolean LIST_VOLUME_DANGLING_FILTER = false;
-    public static final Map<String, String> LIST_VOLUME_DRIVEROPTS = new HashMap<String, String>() {
-
-        {
-            put("type", "tmpfs");
-        }
-    };
+    public static final Map<String, String> LIST_VOLUME_DRIVEROPTS = ImmutableMap.of("type", "tmpfs");
 
     public static final String PULL_IMAGE_TESTIMAGE = "busybox";
     public static final String PULL_IMAGE_IMAGETAG = "latest";
     public static final String PULL_IMAGE_USERNAME = null;
     public static final String PULL_IMAGE_PASSWORD = null;
 
-    public static final Boolean LIST_IMAGE_NOCACHE = true;
-    public static final boolean LIST_IMAGE_FORCERM = true;
-    public static final boolean LIST_IMAGE_PULLIMAGE = false;
-    public static final boolean LIST_IMAGE_REMOVE_CONTAINERS = true;
     public static final boolean LIST_IMAGE_SHOWALL = true;
     public static final boolean LIST_IMAGE_DANGLING = false;
     public static final String LIST_IMAGE_IMAGENAME_FILTER = "list-image-filter";
     public static final String LIST_IMAGE_IMAGELABEL_FILTER = "image-label-filter";
-    public static final Map<String, String> LIST_IMAGE_LABELS = new HashMap<String, String>() {
-
-        {
-            put("TestLabel", "label1");
-            put("TestLabel2", "label2");
-        }
-    };
-    public static final List<String> LIST_IMAGE_IMAGE_TAGS = Collections.unmodifiableList(Arrays.asList(new String[] {
-        "created-list-image-test:latest"
-    }));
-    public static final String LIST_IMAGE_DOCKERFILE_PATH = "src/test/resources/input-files/Dockerfile";
-    public static final String LIST_IMAGE_CPUSET = null;
-    public static final String LIST_IMAGE_CPUSHARES = null;
-    public static final String LIST_IMAGE_BUILDARGUMENT_NAME = null;
-    public static final String LIST_IMAGE_BUILDARGUMENT_VALUE = null;
-    public static final long LIST_IMAGE_MEMORY = 0;
-    public static final long LIST_IMAGE_MEMSWAP = 0;
 
     public static final String PUSH_IMAGE_IMAGETAG = "latest";
     public static final String PUSH_IMAGE_REPOSITORY = "localhost:5000";

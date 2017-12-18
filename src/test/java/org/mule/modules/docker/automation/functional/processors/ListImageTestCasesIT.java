@@ -7,8 +7,6 @@ package org.mule.modules.docker.automation.functional.processors;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -27,24 +25,21 @@ public class ListImageTestCasesIT extends AbstractTestCase<DockerConnector> {
         super(DockerConnector.class);
     }
 
+    String imageName = "busybox", tag = "latest";
+
     @Before
     public void setup() {
 
-        java.util.List<java.lang.String> cacheFromImage = new ArrayList<java.lang.String>();
         try {
-            getConnector().buildImage(TestsConstants.LIST_IMAGE_DOCKERFILE_PATH, TestsConstants.LIST_IMAGE_IMAGE_TAGS, TestsConstants.LIST_IMAGE_CPUSET,
-                    TestsConstants.LIST_IMAGE_CPUSHARES, TestsConstants.LIST_IMAGE_LABELS, TestsConstants.LIST_IMAGE_MEMORY, TestsConstants.LIST_IMAGE_MEMSWAP,
-                    TestsConstants.LIST_IMAGE_BUILDARGUMENT_NAME, TestsConstants.LIST_IMAGE_BUILDARGUMENT_VALUE, cacheFromImage, TestsConstants.LIST_IMAGE_NOCACHE,
-                    TestsConstants.LIST_IMAGE_FORCERM, TestsConstants.LIST_IMAGE_PULLIMAGE, TestsConstants.LIST_IMAGE_REMOVE_CONTAINERS, null);
-        } catch (InterruptedException | URISyntaxException e) {
+            getConnector().pullImage(imageName, tag, null, null);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     @After
     public void tearDown() {
-        String[] tag = TestsConstants.LIST_IMAGE_IMAGE_TAGS.iterator().next().split(":");
-        getConnector().removeImage(tag[0], tag[1], true, false, null);
+        getConnector().removeImage(imageName, tag, true, false, null);
     }
 
     @Test
@@ -57,8 +52,8 @@ public class ListImageTestCasesIT extends AbstractTestCase<DockerConnector> {
 
     @Test
     public void verifyListImagesWithConfigParameter() {
-        List<Image> images = getConnector().listImage(TestsConstants.LIST_IMAGE_SHOWALL, TestsConstants.LIST_IMAGE_DANGLING,
-                TestsConstants.LIST_IMAGE_IMAGENAME_FILTER, TestsConstants.LIST_IMAGE_IMAGELABEL_FILTER);
+        List<Image> images = getConnector().listImage(TestsConstants.LIST_IMAGE_SHOWALL, TestsConstants.LIST_IMAGE_DANGLING, TestsConstants.LIST_IMAGE_IMAGENAME_FILTER,
+                TestsConstants.LIST_IMAGE_IMAGELABEL_FILTER);
         assertNotNull(images);
     }
 
