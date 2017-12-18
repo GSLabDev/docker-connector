@@ -253,7 +253,7 @@ image:docker-get-container-stats.png[Docker Stream Container statistics]
 
 * link:#use-case-1[Build Docker image from Dockerfile and run container]
 
-* link:#use-case-2[Scale up and scale down Docker containers]
+* link:#use-case-2[Scale up Docker containers]
 
 * link:#use-case-3[Create a container]
 
@@ -344,29 +344,28 @@ http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mu
 ----
 
 [use-case-2]
-=== Scale up and scale down Docker containers
+=== Scale up Docker containers
 ** Please refer the previous use cases to set up and configure the Docker connector.
 ** Scaling can be used in the scenarios where the demand for resources goes up or reduces suddenly. The use case implements the following operations of the Docker connector :
 [start=1]
 . *Run Container*
-. *Delete Container*
 . *Get Container Statistics*
 . *Get Container List*
 
 ** There are two different flows to execute the use case: 
 [start=1]
 . *CreateAndRunContainer* - It will run a new container which is to be monitored for resource consumption.
-. *ScaleUpAndScaleDown* - 
+. *ScaleUp* - 
 .. *Get Container Statistics* - To get the statistics of the container started in the previous flow.
 .. *Set Monitor Parameter* - Assign the monitoring parameters like memory stats, CPU stats etc. 
 .. *Get List of Containers* - Get the list of docker containers running on the docker host. 
 .. *Set Number of Running Containers* - Assign the number of containers running on the docker host.
 .. *Is Scaling Required?* - It acts as a decision maker for scaling based on number of containers already present on the host and IO activity.
 .. *Create Containers* -  Start a new container if exisiting container experiences high IO activity based on the decision of choice connector.
-.. *Delete Containers* - Delete the existing container based on the decision of choice connector.
 .. *Default Logger* - It is the default route if none of the conditions in choice connector gets satisfied.
-  
- 
+
+.. Delete the newly created container manually by logging into docker host, and observe that new container will spawn again.
+
 ** After you create the flows, right-click the project name in the  and click Run As > Mule Application.
 
 image:scaling.png[Docker-flow]
@@ -391,49 +390,63 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/docker http://www.mulesoft.org/schema/mule/docker/current/mule-docker.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
-	<http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-	<docker:HTTP-Docker-Config name="Docker__HTTP_Docker_Config" dockerHostIP="${docker.host}" dockerHostPort="${docker.port}" doc:name="Docker: HTTP Docker Config"/>
-    <context:property-placeholder location="mule-app.properties"/>
-	<flow name="CreateandRunContainer">
-		<http:listener config-ref="HTTP_Listener_Configuration" path="/createapp" doc:name="HTTP"/>
-		<docker:run-container config-ref="Docker__HTTP_Docker_Config" imageName="runapp" containerName="runappApplication" doc:name="Run container">
+	<http:listener-config name="HTTP_Listener_Configuration"
+		host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
+	<docker:HTTP-Docker-Config name="Docker__HTTP_Docker_Config"
+		dockerHostIP="${docker.host}" dockerHostPort="${docker.port}"
+		doc:name="Docker: HTTP Docker Config" />
+	<queued-asynchronous-processing-strategy
+		name="allow500Threads" maxThreads="500"
+		doc:name="Queued Asynchronous Processing Strategy" />
+	<flow name="createAndRunContainer">
+		<http:listener config-ref="HTTP_Listener_Configuration"
+			path="/standalone" doc:name="HTTP" />
+		<docker:run-container config-ref="Docker__HTTP_Docker_Config"
+			doc:name="Run container" containerName="runappApplication" imageName="runapp">
 			<docker:command>
 				<docker:command>/bin/sh</docker:command>
 				<docker:command>write.sh</docker:command>
 			</docker:command>
 		</docker:run-container>
-		<logger message="Running a new container from flow  !" level="INFO" doc:name="Log run container details"/>
+		<logger level="INFO" doc:name="Log run container details"
+			message="Flow CreateAndRunContainer executed successfully !" />
 	</flow>
-	<flow name="ScaleUpAndScaleDown" initialState="started">
-		<docker:get-container-statistics config-ref="Docker__HTTP_Docker_Config" containerName="runappApplication" pollingPeriod="10000" doc:name="Get container Statistics (Streaming)"/>
-		<set-variable variableName="usage" value="#[payload.memoryStats.stats.pgpgout]" doc:name="Set monitor parameter"/>
-		<logger message="Variable connector output #[flowVars.usage]" level="INFO" doc:name="Log monitoring parameter"/>
-		<docker:list-containers config-ref="Docker__HTTP_Docker_Config" doc:name="Get list of containers"/>
-		<logger message="Number of containers #[payload.size()]" level="INFO" doc:name="Log number of running containers"/>
-		<set-variable variableName="numberOfContainers" value="#[payload.size()]" doc:name="Set number of running containers "/>
-		<choice doc:name="Is scaling required?">
-			<when expression="#[flowVars.usage &gt; 54200 &amp;&amp; flowVars.numberOfContainers &lt;= 1]">
-				<docker:run-container config-ref="Docker__HTTP_Docker_Config" imageName="runapp" containerName="runappApplication1" doc:name="Create container">
+	<flow name="scaleUp" processingStrategy="allow500Threads">
+		<docker:get-container-statistics
+			config-ref="Docker__HTTP_Docker_Config" containerName="runappApplication"
+			doc:name="Docker (Streaming)" pollingPeriod="60000" />
+		<set-variable variableName="usage"
+			value="#[payload.memoryStats.stats.pgpgout]" doc:name="Set monitor parameter" />
+		<logger message="Log monitoring parameter pgpgout  #[flowVars.usage]"
+			level="INFO" doc:name="Log monitoring parameter" />
+		<docker:list-containers config-ref="Docker__HTTP_Docker_Config"
+			showAll="true" doc:name="Get list of containers" />
+		<logger message="Number of containers already running   #[payload.size()]"
+			level="INFO" doc:name="Log number of running containers" />
+		<set-variable variableName="numberOfContainers" value="#[payload.size()]"
+			doc:name="Set number of running containers " />
+		<choice doc:name="Is Scaling Required?">
+			<when
+				expression="#[flowVars.usage &gt; 54200 &amp;&amp; flowVars.numberOfContainers &lt; 2 ]">
+				<docker:run-container config-ref="Docker__HTTP_Docker_Config"
+					imageName="runapp" containerName="runappApplication1" doc:name="Create container">
 					<docker:command>
 						<docker:command>/bin/sh</docker:command>
 						<docker:command>write.sh</docker:command>
 					</docker:command>
 				</docker:run-container>
-				<logger message="Created new container !" level="INFO" doc:name="Log scale up results"/>
-			</when>
-			<when expression="#[flowVars.usage  &lt; 10 &amp;&amp; flowVars.numberOfContainers &gt;= 1 ]">
-				<docker:delete-container config-ref="Docker__HTTP_Docker_Config" containerName="runappApplication" doc:name="Delete container" forceDelete="true"/>
-				<logger message="Generated default stats !  #[payload]" level="INFO" doc:name="Log scale down results"/>
+				<logger message="Created new container !" level="INFO"
+					doc:name="Log Scale up Results" />
 			</when>
 			<otherwise>
-				<logger level="INFO" doc:name="Default Logger"/>
+				<logger level="INFO" doc:name="Default Logger"
+					message="Default logger !" />
 			</otherwise>
 		</choice>
 	</flow>
 </mule>
-
 ----
-
+TIP: For using streaming functionality of Docker connector proper *Processing Strategy* and *polling frequency* should be set. In the above example *queued-asynchronous-processing-strategy* is used and *polling frequency* is set to 60000 ms. + 
 [use-case-3]
 === Create a container
 ** In Anypoint Studio, click *File > New > Mule Project*, name the project, and click *OK*.
