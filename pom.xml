@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -25,6 +23,9 @@
 		<powermock.version>1.7.1</powermock.version>
 		<junixsocketCommonVersion>2.0.2</junixsocketCommonVersion>
 		<jerseyApacheConnectorVersion>2.13</jerseyApacheConnectorVersion>
+		<apacheCommonsCompress.version>1.12</apacheCommonsCompress.version>
+		<powermockModuleJunit4.Version>1.7.3</powermockModuleJunit4.Version>
+		<mavenSurefirePlugin>2.20.1</mavenSurefirePlugin>
 	</properties>
 
 	<distributionManagement>
@@ -73,8 +74,13 @@
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
-			<version>1.7.3</version>
+			<version>${powermockModuleJunit4.Version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>${apacheCommonsCompress.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -82,7 +88,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.20.1</version>
+				<version>${mavenSurefirePlugin}</version>
 				<configuration>
 					<includes>
 						<include>UnitTestSuite.java</include>

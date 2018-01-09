@@ -29,16 +29,7 @@ while :; do echo "Now `date`"; sleep 1; done
   - imageName - This is the name of the new build image using Dockerfile.
   - imageTag - This is a tag of the new build image using Dockerfile.	
   - containerName - This is the name of container created to run application.
-	
-	
-
-## How it works:
-   - From the operation window select the Build Image from Docker File operation. Enter parameters required to this operation.
-   - Drag the logger onto the canvas and log #[payload] to log low level information of built image.
-   - Drag the Docker connector onto the canvas, and select Run Container operation.
-   - Drag the Docker connector onto the canvas, and select Inspect Container operation. Enter container name same as specified in Run Container.
-   - Then drag the Object to JSON Transformer onto the canvas to return JSON response.
-   - Drag the logger onto the canvas and log #[payload] to log low level information of Inspect Container.
-   - Add new flow and drag Docker connector at the beginning of flow(in source). Select getContainerLogs operation and enter name of container same as specified in Run Container.
-   - After you create the flows, right-click the project name in the and click Run As > Mule Application.
+  - Deploy the example in a Mule Runtime and open URL http://localhost:8081/runapp
   
+### How it works:
+	- Docker connector builds image using Dockerfile and run container from that image on docker host.

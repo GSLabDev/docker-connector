@@ -77,24 +77,24 @@ public class DockerContainerOperations {
 
         List<Container> containerList;
         logger.info("Getting container list from docker");
-        final ListContainersCmd listContainerResponse = dockerClient.listContainersCmd().withShowAll(showAll).withShowSize(showSize);
+        final ListContainersCmd listContainerResponse = dockerClient.listContainersCmd().withShowAll(showAll)
+                .withShowSize(showSize);
         if (before != null) {
-            logger.info("Before");
+            logger.info("Listing all containers before ", before);
             listContainerResponse.withBefore(before);
-            logger.info("before executed : " + before.getClass().getName());
         }
         if (limit != 0) {
-            logger.info("limit");
+            logger.info("Using limit value : ", limit);
             listContainerResponse.withLimit(limit);
             logger.info("limit executed");
         }
         if (status != null) {
-            logger.info("status value : " + status);
+            logger.info("Using status value : " + status);
             listContainerResponse.withStatusFilter(status);
             logger.info("status executed : " + status.getClass().getName());
         }
         if (labels != null) {
-            logger.info("Labels not empty : " + labels);
+            logger.info("Listing containers using label filter : " + labels);
             listContainerResponse.withLabelFilter(labels);
         }
         containerList = listContainerResponse.exec();
@@ -196,11 +196,16 @@ public class DockerContainerOperations {
     public CreateContainerResponse runContainerImpl(final String imageName, final String imageTag,
             final String containerName, final List<String> command) {
         logger.info("Creating and Starting container " + containerName);
-        CreateContainerResponse createContainerResponse = dockerClient.createContainerCmd(imageName + ":" + imageTag)
-                .withName(containerName).withCmd(command).exec();
+        CreateContainerCmd createContainerCommand = dockerClient.createContainerCmd(imageName + ":" + imageTag)
+                .withName(containerName);
+        if (command != null) {
+            createContainerCommand.withCmd(command);
+        }
+        CreateContainerResponse createContainerResponse = createContainerCommand.exec();
+
         logger.info("Create container response : " + createContainerResponse);
         dockerClient.startContainerCmd(containerName).exec();
-        logger.info(containerName + "is stared");
+        logger.info(containerName + " container is stared");
         return createContainerResponse;
     }
 
@@ -293,7 +298,6 @@ public class DockerContainerOperations {
         logger.info("Killing Container " + containerName);
         dockerClient.killContainerCmd(containerName).withSignal(signal).exec();
         logger.info(containerName + " Container Killed with signal " + signal);
-
     }
 
     /**
