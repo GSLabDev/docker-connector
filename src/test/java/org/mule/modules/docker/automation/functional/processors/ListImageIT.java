@@ -1,7 +1,6 @@
 /**
- * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-
 package org.mule.modules.docker.automation.functional.processors;
 
 import static org.junit.Assert.assertNotNull;
@@ -19,9 +18,9 @@ import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.api.model.Info;
 
-public class ListImageTestCasesIT extends AbstractTestCase<DockerConnector> {
+public class ListImageIT extends AbstractTestCase<DockerConnector> {
 
-    public ListImageTestCasesIT() {
+    public ListImageIT() {
         super(DockerConnector.class);
     }
 

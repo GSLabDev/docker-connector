@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ */
 package org.mule.modules.docker.automation.unit;
 
 import static org.junit.Assert.assertNotNull;
@@ -14,7 +17,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
 
-public class ContainerOperationTests extends DockerConnectorAbstractTestCase {
+public class ContainerOperationTest extends DockerConnectorAbstractTestCase {
 
     DockerContainerOperations dockerContainerOperations;
 

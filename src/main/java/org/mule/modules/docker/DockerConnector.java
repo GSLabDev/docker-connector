@@ -1,7 +1,6 @@
 /**
- * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-
 package org.mule.modules.docker;
 
 import java.net.URISyntaxException;
@@ -18,6 +17,7 @@ import org.mule.api.annotations.display.FriendlyName;
 import org.mule.api.annotations.display.Path;
 import org.mule.api.annotations.display.Placement;
 import org.mule.api.annotations.display.Summary;
+import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.callback.SourceCallback;
@@ -45,6 +45,7 @@ import com.github.dockerjava.api.model.Info;
  * inbound as well as outbound connector from the mule flow.
  */
 
+@RequiresEnterpriseLicense ( allowEval = true )
 @Connector(name = "docker", friendlyName = "Docker", minMuleVersion = "3.8.5")
 public class DockerConnector {
     /**
