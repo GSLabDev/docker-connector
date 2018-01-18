@@ -1,35 +1,50 @@
-# Build image from Dockerfile and run container
+# Docker Connector Demo
+## Build image from Dockerfile and run container
 
-## Introduction
-This demo is about building a desired docker image using Dockerfile and to run a container using the docker image. It covers "Build Image from Docker File" and "Run Container" operations of Docker Connector.
-  
-## How to demo:
-### Prerequisite:
-- Create Dockerfile in src/main/resources/docker and add required commands in docker file to build image.
-- We have added this commands in Dockerfile to create docker image.
+### Introduction
+This demo is about building a desired docker image using Dockerfile and to run a container using the docker image. It covers different operations of docker connector like Build Image from Docker File, Push Image, Pull Image, Run Container and Inspect Container.
+
+### Pre-requisites
+1. Docker engine running on TCP
+2. Docker registry running on localhost:5000
+2. Minimum Mule Server 3.8.5 EE
+
+### Preparation
+1. Import this DEMO in Anypoint Studio going to ***File → Import…​ → Anypoint Studio Project from External Location***, select the demo project root and choose as server runtime ***Mule Server 3.8.5 EE*** or above version.
+2. Once imported, in ***src/main/resources/*** you will find mule-app-DEV.properties file, this contains all required properties to make the DEMO work. Open it. It will look like:
+
 ```
-FROM ubuntu:latest
-#copy the  application to the container:
-COPY runapp.sh  /
-#Define working directory:
-WORKDIR /
-CMD  ["/bin/sh","runapp.sh"]				
-```				
-- Create runapp.sh file in src/main/resources/docker and add content as below:
+#Docker configuration
+docker.host=
+docker.port=
+docker.APIVersion=
+
+# Build Image from docker file parameters
+build.dockerFile=src/main/resources/docker/Dockerfile
+build.imageName=localhost:5000/echoapp
+build.imageTag=test
+
+# Run container and application parameters
+app.containerName=docker-echoapp-container
 ```
-#!/bin/bash
-while :; do echo "Now `date`"; sleep 1; done
-```
-  
-- Set the following properties in ``` src/main/resources/mule-app-DEV.properties ``` :
-  - dockerHost - This is the Host name or IP of your docker engine host.
-  - port - This is the port exposed by docker engine.
-  - APIVersion - This is the API version of docker engine.
-  - dockerFile - This is the path of Dockerfile which contains commands to build docker image. ( e.g. src/main/resources/docker/Dockerfile)
-  - imageName - This is the name of the new build image using Dockerfile.
-  - imageTag - This is a tag of the new build image using Dockerfile.	
-  - containerName - This is the name of container created to run application.
-  - Deploy the example in a Mule Runtime and open URL http://localhost:8081/runapp
+
+3. Fill empty property with the required value:
+	
+Field Name        | Value
+-------------     | -------------
+docker.dockerHost | Host name or IP of your docker engine host
+docker.port       | Port exposed by docker engine
+docker.APIVersion | API version of docker engine
+
+***Note:*** *Change build.imageName if your docker registry is running on other than localhost:5000*
+
+4. In ***Anypoint Studio***, Right click in the project folder → Run As → Mule Application.
+
+5. If the Mule App is deployed correctly, hit hit <http://localhost:8081/runapp>.
   
 ### How it works:
-	- Docker connector builds image using Dockerfile and run container from that image on docker host.
+- ***Build an image from Docker file***: builds image using *src/main/resources/docker/Dockerfile*. This operation use *runapp.sh* as an application file from *src/main/resources/docker/*.
+- ***Push Image***: push built image in above operation on local docker registry.
+- ***Pull Image***: pull image from docker registry.
+- ***Run Container***: create and run container from pulled image.
+- ***Inspect Container***: gets low-level information of the container created in *Run Container* operation.
