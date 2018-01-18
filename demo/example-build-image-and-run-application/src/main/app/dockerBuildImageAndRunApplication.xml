@@ -15,9 +15,9 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
     <docker:HTTP-Docker-Config name="Docker__HTTP_Docker_Config" dockerHostIP="${docker.host}" dockerHostPort="${docker.port}" apiVersion="${docker.APIVersion}" doc:name="Docker:HTTP Docker Config"/>
     <flow name="dockerBuildImageAndRunApplication">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/runapp" doc:name="HTTP"/>
-        <docker:build-image config-ref="Docker__HTTP_Docker_Config" dockerFilePath="${build.dockerFile}" imageName="${build.imageName}" imageTag="${build.imageTag}" doc:name="Build image from Dockerfile">
+        <docker:build-image config-ref="Docker__HTTP_Docker_Config" dockerFilePath="${build.dockerFile}" removeContainers="true" doc:name="Build image from Dockerfile">
             <docker:image-tags>
-                <docker:image-tag>test</docker:image-tag>
+                <docker:image-tag>${build.imageName}:${build.imageTag}</docker:image-tag>
             </docker:image-tags>
         </docker:build-image>
         <logger message="Build Image response: + #[payload]" level="INFO" doc:name="Log build image response"/>
@@ -33,12 +33,5 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
         <json:object-to-json-transformer doc:name="InspectContainerResponse to JSON"/>
         <logger message="#[payload]" level="INFO" doc:name="Log InspectContainerResponse"/>
     </flow>
-    <flow name="getContainerlogs">
-        <docker:get-container-logs config-ref="Docker__HTTP_Docker_Config" containerName="${app.containerName}" showTimeStamp="true" standardOut="true" standardError="true" pollingPeriod="10000" doc:name="Get container logs"/>
-        <logger message="#[payload]" level="INFO" doc:name="Log container logs"/>
-    </flow>
-    <flow name="getContainerStatistics" initialState="stopped">
-        <docker:get-container-statistics config-ref="Docker__HTTP_Docker_Config" containerName="${app.containerName}" doc:name="Get container statistics"/>
-        <logger message="#[payload]" level="INFO" doc:name="Log container statistics"/>
-    </flow>
+
 </mule>
