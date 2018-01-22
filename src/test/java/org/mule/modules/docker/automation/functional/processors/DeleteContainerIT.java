@@ -35,7 +35,6 @@ public class DeleteContainerIT extends AbstractTestCase<DockerConnector> {
     @Test
     public void verifyDeleteContainer() {
         int containerCount = getConnector().dockerInfo().getContainers();
-        assertTrue(containerCount > 1);
         getConnector().deleteContainer(TestsConstants.DELETE_CONTAINER, TestsConstants.DELETE_CONTAINER_FORCE_REMOVE, TestsConstants.DELETE_CONTAINER_REMOVE_VOLUME);
         assertEquals(containerCount, (getConnector().dockerInfo().getContainers() + 1));
     }
