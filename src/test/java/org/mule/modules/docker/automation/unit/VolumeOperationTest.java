@@ -55,7 +55,7 @@ public class VolumeOperationTest extends DockerConnectorAbstractTestCase {
     public void verifyListVolume() {
         ListVolumesResponse listVolumeResp = dockerVolumeOperations.listVolumeImpl(TestsConstants.LIST_VOLUME_DANGLING_FILTER);
         assertNotNull(listVolumeResp);
-        Mockito.verify(mockListVolCmd, Mockito.times(1)).withDanglingFilter(false);
+        Mockito.verify(mockListVolCmd, Mockito.times(1)).withDanglingFilter(TestsConstants.LIST_VOLUME_DANGLING_FILTER);
     }
 
     @Test
