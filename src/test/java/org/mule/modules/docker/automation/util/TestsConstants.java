@@ -116,7 +116,7 @@ public class TestsConstants {
 
     public static final String LIST_VOLUME_VOLUME_NAME = "volume1";
     public static final String LIST_VOLUME_VOLUMEDRIVER = "local";
-    public static final boolean LIST_VOLUME_DANGLING_FILTER = false;
+    public static final boolean LIST_VOLUME_DANGLING_FILTER = true;
     public static final Map<String, String> LIST_VOLUME_DRIVEROPTS = ImmutableMap.of("type", "tmpfs");
 
     public static final String PULL_IMAGE_TESTIMAGE = "busybox";
