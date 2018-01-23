@@ -28,6 +28,9 @@
 		<apacheCommonsCompress.version>1.12</apacheCommonsCompress.version>
 		<powermockModuleJunit4.Version>1.7.3</powermockModuleJunit4.Version>
 		<mavenSurefirePlugin>2.20.1</mavenSurefirePlugin>
+		<jersey-client.version>2.26</jersey-client.version>
+		<javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
+		<glassfish-javax.inject.version>2.5.0-b60</glassfish-javax.inject.version>
 		<ctf.connector.class>org.mule.modules.docker.DockerConnector</ctf.connector.class>
 	</properties>
 
@@ -85,9 +88,58 @@
 			<artifactId>commons-compress</artifactId>
 			<version>${apacheCommonsCompress.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.hk2.external</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${glassfish-javax.inject.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>${javax.ws.rs-api.version}</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<!-- custom shade configuration -->
+					<artifactSet>
+						<includes>
+							<include>org.glassfish.jersey.core:jersey-client</include>
+							<include>org.glassfish.jersey.core:jersey-common</include>
+						</includes>
+					</artifactSet>
+					<relocations>
+						<relocation>
+							<pattern>org.glassfish.jersey</pattern>
+							<shadedPattern>org.glassfish.jersey.shaded</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
