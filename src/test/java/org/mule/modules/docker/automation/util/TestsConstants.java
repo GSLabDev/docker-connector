@@ -69,7 +69,7 @@ public class TestsConstants {
     public static final boolean GET_CONTAINER_LOG_STANDARD_ERROR = true;
     public static final int GET_CONTAINER_LOG_SHOW_SINCE = 10;
     public static final int GET_CONTAINER_LOG_TAIL = 10;
-    public static final boolean GET_CONTAINER_LOG_FOLLOW_LOGS = true;
+    public static final boolean GET_CONTAINER_LOG_FOLLOW_LOGS = false;
 
     public static final String GET_CONTAINER_STATS = "get-container-stats-name";
 

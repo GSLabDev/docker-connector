@@ -10,11 +10,13 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 
+@Ignore
 public class GetContainerStatsIT extends AbstractTestCase<DockerConnector> {
 
     int pollingPeriod = 1000;
