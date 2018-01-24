@@ -24,21 +24,14 @@ public class ListImageIT extends AbstractTestCase<DockerConnector> {
         super(DockerConnector.class);
     }
 
-    String imageName = "busybox", tag = "latest";
-
     @Before
     public void setup() {
 
         try {
-            getConnector().pullImage(imageName, tag, null, null);
+			getConnector().pullImage(TestsConstants.IMAGE_NAME, TestsConstants.IMAGE_TAG, null, null);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    @After
-    public void tearDown() {
-        getConnector().removeImage(imageName, tag, true, false, null);
     }
 
     @Test

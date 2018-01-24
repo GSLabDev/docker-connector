@@ -119,7 +119,7 @@ public class TestsConstants {
     public static final boolean LIST_VOLUME_DANGLING_FILTER = true;
     public static final Map<String, String> LIST_VOLUME_DRIVEROPTS = ImmutableMap.of("type", "tmpfs");
 
-    public static final String PULL_IMAGE_TESTIMAGE = "busybox";
+    public static final String PULL_IMAGE_TESTIMAGE = "cirros";
     public static final String PULL_IMAGE_IMAGETAG = "latest";
     public static final String PULL_IMAGE_USERNAME = null;
     public static final String PULL_IMAGE_PASSWORD = null;

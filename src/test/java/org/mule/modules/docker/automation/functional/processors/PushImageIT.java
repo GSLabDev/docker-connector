@@ -19,8 +19,7 @@ public class PushImageIT extends AbstractTestCase<DockerConnector> {
     @Before
     public void setup() {
         try {
-            getConnector().pullImage(TestsConstants.PULL_IMAGE_TESTIMAGE, TestsConstants.PULL_IMAGE_IMAGETAG, TestsConstants.PULL_IMAGE_USERNAME,
-                    TestsConstants.PULL_IMAGE_PASSWORD);
+            getConnector().pullImage(TestsConstants.IMAGE_NAME, TestsConstants.IMAGE_TAG, TestsConstants.PULL_IMAGE_USERNAME, TestsConstants.PULL_IMAGE_PASSWORD);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -38,7 +37,6 @@ public class PushImageIT extends AbstractTestCase<DockerConnector> {
         getConnector().tagImage(TestsConstants.PULL_IMAGE_TESTIMAGE, TestsConstants.PUSH_IMAGE_IMAGETAG, TestsConstants.PUSH_IMAGE_DEST_IMAGE_NAME,
                 TestsConstants.PUSH_IMAGE_REPOSITORY, TestsConstants.PUSH_IMAGE_DEST_IMAGE_TAG);
         getConnector().pushImage(TestsConstants.PUSH_IMAGE_REPOSITORY + "/" + TestsConstants.PUSH_IMAGE_DEST_IMAGE_NAME, TestsConstants.PUSH_IMAGE_DEST_IMAGE_TAG, null, null);
-        getConnector().removeImage(TestsConstants.PULL_IMAGE_TESTIMAGE, TestsConstants.PUSH_IMAGE_IMAGETAG, true, TestsConstants.PUSH_IMAGE_PRUNE, null);
         getConnector().pullImage(TestsConstants.PUSH_IMAGE_REPOSITORY + "/" + TestsConstants.PUSH_IMAGE_DEST_IMAGE_NAME, TestsConstants.PUSH_IMAGE_DEST_IMAGE_TAG, null, null);
     }
 
@@ -48,7 +46,6 @@ public class PushImageIT extends AbstractTestCase<DockerConnector> {
                 TestsConstants.PUSH_IMAGE_REPOSITORY, TestsConstants.PUSH_IMAGE_DEST_IMAGE_TAG);
         getConnector().pushImage(TestsConstants.PUSH_IMAGE_REPOSITORY + "/" + TestsConstants.PUSH_IMAGE_DEST_IMAGE_NAME, TestsConstants.PUSH_IMAGE_DEST_IMAGE_TAG,
                 TestsConstants.PUSH_IMAGE_USERNAME, TestsConstants.PUSH_IMAGE_PASSWORD);
-        getConnector().removeImage(TestsConstants.PULL_IMAGE_TESTIMAGE, TestsConstants.PUSH_IMAGE_IMAGETAG, true, TestsConstants.PUSH_IMAGE_PRUNE, null);
         getConnector().pullImage(TestsConstants.PUSH_IMAGE_REPOSITORY + "/" + TestsConstants.PUSH_IMAGE_DEST_IMAGE_NAME, TestsConstants.PUSH_IMAGE_DEST_IMAGE_TAG,
                 TestsConstants.PUSH_IMAGE_USERNAME, TestsConstants.PUSH_IMAGE_PASSWORD);
     }

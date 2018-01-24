@@ -26,7 +26,8 @@ public class UnpauseContainerIT extends AbstractTestCase<DockerConnector> {
     }
 
     @Before
-    public void setup() {
+    public void setup() throws InterruptedException {
+        getConnector().pullImage(TestsConstants.IMAGE_NAME, TestsConstants.IMAGE_TAG, null, null);
         createContainerResponse = getConnector().runContainer(TestsConstants.IMAGE_NAME, TestsConstants.IMAGE_TAG, TestsConstants.UNPAUSE_CONTAINER, TestsConstants.COMMAND);
     }
 
