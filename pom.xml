@@ -31,6 +31,7 @@
 		<jersey-client.version>2.26</jersey-client.version>
 		<javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
 		<glassfish-javax.inject.version>2.5.0-b60</glassfish-javax.inject.version>
+		<fasterxml-jackson.version>2.9.2</fasterxml-jackson.version>
 		<ctf.connector.class>org.mule.modules.docker.DockerConnector</ctf.connector.class>
 	</properties>
 
@@ -114,6 +115,11 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>${javax.ws.rs-api.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -129,12 +135,17 @@
 						<includes>
 							<include>org.glassfish.jersey.core:jersey-client</include>
 							<include>org.glassfish.jersey.core:jersey-common</include>
+							<include>com.fasterxml.jackson.core:jackson-databind</include>
 						</includes>
 					</artifactSet>
 					<relocations>
 						<relocation>
 							<pattern>org.glassfish.jersey</pattern>
 							<shadedPattern>org.glassfish.jersey.shaded</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>com.fasterxml.jackson</pattern>
+							<shadedPattern>com.fasterxml.jackson.shaded</shadedPattern>
 						</relocation>
 					</relocations>
 				</configuration>
