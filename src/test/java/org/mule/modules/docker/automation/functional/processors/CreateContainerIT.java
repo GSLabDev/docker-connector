@@ -51,7 +51,11 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
 
     @Test
     public void verifyWithJsonFile() {
-        createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
+        try {
+            createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
+        } catch (Exception e) {
+            System.out.println("verifyWithJsonFile error:" + e.getMessage() + "\n" +e);
+        }
         assertNotNull(createContainerResponse.getId());
         InspectContainerResponse inspectContainerResponse = getConnector()
                 .inspectContainer(createContainerResponse.getId(), true);
