@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
@@ -58,7 +59,7 @@ public class GetContainerLogsIT extends AbstractTestCase<DockerConnector> {
         assertTrue(events.toString().contains("127.0.0.1"));
     }
 
-    @Test
+    @Ignore @Test
     public void testSourceWithoutTailFollow() throws Throwable {
         Object[] signature = {
             null,

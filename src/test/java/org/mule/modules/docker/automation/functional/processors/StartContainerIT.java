@@ -4,7 +4,7 @@
 package org.mule.modules.docker.automation.functional.processors;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -57,7 +57,7 @@ public class StartContainerIT extends AbstractTestCase<DockerConnector> {
         assertNotNull(inspectContainerResponse.getState());
         System.out.println("inspectContainerResponse.getState():" + inspectContainerResponse.getState());
         if (!inspectContainerResponse.getState().getRunning()) {
-            assertSame(inspectContainerResponse.getState().getExitCode(), 0);
+            assertEquals(inspectContainerResponse.getState().getExitCode(), 0);
         }
     }
 
