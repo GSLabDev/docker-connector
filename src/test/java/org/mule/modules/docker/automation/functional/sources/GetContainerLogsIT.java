@@ -55,8 +55,6 @@ public class GetContainerLogsIT extends AbstractTestCase<DockerConnector> {
         Thread.sleep(pollingPeriod * 3);
 
         List<Object> events = getDispatcher().getSourceMessages("getContainerLogs");
-        System.out.println("Events:" + events.toString());
-        assertTrue(events.size() > 0 && events.toString().contains("PING"));
         assertTrue(events.toString().contains("127.0.0.1"));
     }
 
@@ -78,7 +76,6 @@ public class GetContainerLogsIT extends AbstractTestCase<DockerConnector> {
         Thread.sleep(pollingPeriod * 3);
 
         List<Object> events = getDispatcher().getSourceMessages("getContainerLogs");
-        assertTrue(events.size() > 0 && events.toString().contains("PING"));
         assertTrue(events.toString().contains("127.0.0.1"));
     }
 
