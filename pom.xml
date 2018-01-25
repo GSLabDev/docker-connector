@@ -120,6 +120,18 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${fasterxml-jackson.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+
+
 
 	</dependencies>
 	<build>
@@ -136,6 +148,8 @@
 							<include>org.glassfish.jersey.core:jersey-client</include>
 							<include>org.glassfish.jersey.core:jersey-common</include>
 							<include>com.fasterxml.jackson.core:jackson-databind</include>
+							<include>com.fasterxml.jackson.core:jackson-core</include>
+							<include>com.fasterxml.jackson.core:jackson-annotations</include>
 						</includes>
 					</artifactSet>
 					<relocations>
