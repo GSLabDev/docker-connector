@@ -51,7 +51,7 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
         }
     }
 
-    @Ignore @Test
+    @Test
     public void verifyWithoutJsonFile() {
         createContainerResponse = getConnector().createContainer(TestsConstants.CREATE_CONTAINERS_IMAGE, TestsConstants.CREATE_CONTAINERS_IMAGE_TAG, TestsConstants.CREATE_CONTAINER, null);
         assertNotNull(createContainerResponse.getId());
@@ -59,7 +59,7 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
         assertNotNull(inspectContainerResponse.getId());
     }
 
-    @Test
+    @Ignore @Test
     public void verifyWithJsonFile() throws ConfigurationLoadingFailedException {
         Properties validCredentials = ConfigurationUtils.getAutomationCredentialsProperties();;
         final HttpDockerConfig config = new HttpDockerConfig();
