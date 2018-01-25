@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
@@ -50,7 +51,7 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
         }
     }
 
-    @Test
+    @Ignore @Test
     public void verifyWithoutJsonFile() {
         createContainerResponse = getConnector().createContainer(TestsConstants.CREATE_CONTAINERS_IMAGE, TestsConstants.CREATE_CONTAINERS_IMAGE_TAG, TestsConstants.CREATE_CONTAINER, null);
         assertNotNull(createContainerResponse.getId());
