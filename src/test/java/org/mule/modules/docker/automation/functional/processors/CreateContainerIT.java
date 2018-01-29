@@ -9,7 +9,6 @@ import java.util.Properties;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
@@ -27,6 +26,7 @@ import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.BadRequestException;
 
 public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
+
     private CreateContainerResponse createContainerResponse;
 
     public CreateContainerIT() {
@@ -53,15 +53,17 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
 
     @Test
     public void verifyWithoutJsonFile() {
-        createContainerResponse = getConnector().createContainer(TestsConstants.CREATE_CONTAINERS_IMAGE, TestsConstants.CREATE_CONTAINERS_IMAGE_TAG, TestsConstants.CREATE_CONTAINER, null);
+        createContainerResponse = getConnector().createContainer(TestsConstants.CREATE_CONTAINERS_IMAGE, TestsConstants.CREATE_CONTAINERS_IMAGE_TAG,
+                TestsConstants.CREATE_CONTAINER, null);
         assertNotNull(createContainerResponse.getId());
         InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(TestsConstants.CREATE_CONTAINER, true);
         assertNotNull(inspectContainerResponse.getId());
     }
 
-    @Ignore @Test
+    @Test
     public void verifyWithJsonFile() throws ConfigurationLoadingFailedException {
-        Properties validCredentials = ConfigurationUtils.getAutomationCredentialsProperties();;
+        Properties validCredentials = ConfigurationUtils.getAutomationCredentialsProperties();
+        ;
         final HttpDockerConfig config = new HttpDockerConfig();
         String dockerHost = validCredentials.getProperty("HTTP-Docker-Config.dockerHostIP");
         String dockerPort = validCredentials.getProperty("HTTP-Docker-Config.dockerHostPort");
@@ -69,21 +71,27 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
         config.setDockerHostIP(dockerHost);
         config.setDockerHostPort(dockerPort);
         config.setApiVersion(dockerApiVersion);
-        
+
         DockerClient dockerclient = config.getDockerClient();
         CreateContainerCmd createContainerCmd = dockerclient.createContainerCmd("");
         JsonParametersProcessor.parseJsonParameters(TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH, createContainerCmd, CreateContainerPojo.class);
-        
+
         System.out.println("Docker create container command set to:" + createContainerCmd.toString());
-        
+        try {
+            createContainerCmd.withName(createContainerCmd.getName() + "1");
+            CreateContainerResponse response = createContainerCmd.exec();
+            System.out.println("createContainerCmd.exec() response:" + response);
+        } catch (Exception e1) {
+            System.out.println("createContainerCmd.exec():" + e1.getMessage() + "\n" + e1);
+        }
+
         try {
             createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
         } catch (Exception e) {
-            System.out.println("verifyWithJsonFile error:" + e.getMessage() + "\n" +e);
+            System.out.println("verifyWithJsonFile error:" + e.getMessage() + "\n" + e);
         }
         assertNotNull(createContainerResponse.getId());
-        InspectContainerResponse inspectContainerResponse = getConnector()
-                .inspectContainer(createContainerResponse.getId(), true);
+        InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(createContainerResponse.getId(), true);
         assertNotNull(inspectContainerResponse.getId());
     }
 
