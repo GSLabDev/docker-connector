@@ -52,7 +52,6 @@ public class CreateContainerPojo {
     private String workingDir;
     private boolean networkDisabled;
     private String macAddress;
-    @JsonProperty("ExposedPorts")
     private List<ExposedPort> exposedPorts = null;
     private String stopSignal;
     @JsonProperty("HostConfig")
