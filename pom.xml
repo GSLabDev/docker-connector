@@ -23,22 +23,15 @@
 		<devkit.studio.package.skip>false</devkit.studio.package.skip>
 		<dockerJavaClientVersion>3.0.11</dockerJavaClientVersion>
 		<powermock.version>1.7.1</powermock.version>
-		<junixsocket.version>2.0.4</junixsocket.version>
+		<junixsocketCommonVersion>2.0.2</junixsocketCommonVersion>
 		<jerseyApacheConnectorVersion>2.13</jerseyApacheConnectorVersion>
 		<apacheCommonsCompress.version>1.12</apacheCommonsCompress.version>
 		<powermockModuleJunit4.Version>1.7.3</powermockModuleJunit4.Version>
 		<mavenSurefirePlugin>2.20.1</mavenSurefirePlugin>
-		<jersey.version>2.26</jersey.version>
+		<jersey-client.version>2.26</jersey-client.version>
 		<javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
 		<glassfish-javax.inject.version>2.5.0-b60</glassfish-javax.inject.version>
 		<fasterxml-jackson.version>2.9.2</fasterxml-jackson.version>
-		<jackson-jaxrs.version>2.6.4</jackson-jaxrs.version>
-		<commons-codec.version>1.10</commons-codec.version>
-		<httpclient.version>4.5</httpclient.version>
-		<commons-lang.version>2.6</commons-lang.version>
-		<commons-io.version>2.5</commons-io.version>
-		<guava.version>19.0</guava.version>
-		<bouncycastle.version>1.54</bouncycastle.version>
 		<ctf.connector.class>org.mule.modules.docker.DockerConnector</ctf.connector.class>
 	</properties>
 
@@ -83,7 +76,7 @@
 		<dependency>
 			<groupId>com.kohlschutter.junixsocket</groupId>
 			<artifactId>junixsocket-common</artifactId>
-			<version>${junixsocket.version}</version>
+			<version>${junixsocketCommonVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
@@ -99,17 +92,17 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
+			<version>${jersey-client.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>
-			<version>${jersey.version}</version>
+			<version>${jersey-client.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.inject</groupId>
 			<artifactId>jersey-hk2</artifactId>
-			<version>${jersey.version}</version>
+			<version>${jersey-client.version}</version>
 		</dependency>
 
 		<dependency>
@@ -138,62 +131,9 @@
 			<version>${fasterxml-jackson.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.fasterxml.jackson.jaxrs</groupId>
-			<artifactId>jackson-jaxrs-json-provider</artifactId>
-			<version>${jackson-jaxrs.version}</version>
-		</dependency>
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.4.5</version>
-		</dependency>
 
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${httpclient.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>com.kohlschutter.junixsocket</groupId>
-			<artifactId>junixsocket-native-common</artifactId>
-			<version>${junixsocket.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons-codec.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>${commons-lang.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons-io.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcpkix-jdk15on</artifactId>
-			<version>${bouncycastle.version}</version>
-		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 
@@ -210,15 +150,6 @@
 							<include>com.fasterxml.jackson.core:jackson-databind</include>
 							<include>com.fasterxml.jackson.core:jackson-core</include>
 							<include>com.fasterxml.jackson.core:jackson-annotations</include>
-							<include>com.fasterxml.jackson.jaxrs:ackson-jaxrs-json-provider</include>
-							<include>org.glassfish.jersey.connectors:jersey-apache-connector</include>
-							<include>org.glassfish.jersey.inject:jersey-hk2</include>
-							<include>com.kohlschutter.junixsocket:junixsocket-native-common</include>
-							<include>commons-codec:commons-codec</include>
-							<include>commons-lang:commons-lang</include>
-							<include>commons-io:commons-io</include>
-							<include>com.google.guava:guava</include>
-							<include>org.bouncycastle:bcpkix-jdk15on</include>
 						</includes>
 					</artifactSet>
 					<relocations>
