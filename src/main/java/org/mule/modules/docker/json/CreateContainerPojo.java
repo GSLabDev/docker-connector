@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
@@ -20,6 +23,8 @@ import com.github.dockerjava.api.model.Volume;
  *
  */
 public class CreateContainerPojo {
+    private static final Logger logger = LogManager.getLogger(CreateContainerPojo.class.getName());
+
     public CreateContainerPojo() {
         // Default constructor used by jackson
     }
@@ -47,6 +52,7 @@ public class CreateContainerPojo {
     private String workingDir;
     private boolean networkDisabled;
     private String macAddress;
+    @JsonProperty("ExposedPorts")
     private List<ExposedPort> exposedPorts = null;
     private String stopSignal;
     @JsonProperty("HostConfig")
@@ -72,7 +78,9 @@ public class CreateContainerPojo {
         return exposedPorts;
     }
 
+    @JsonProperty("ExposedPorts")
     public void setExposedPorts(Map<String, Object> exposedPortsMap) {
+        logger.info("setting exposed ports value" );
         List<ExposedPort> exposedPortsList = new ArrayList<ExposedPort>();
         for (Entry<String, Object> exposePortEnty : exposedPortsMap.entrySet()) {
             String[] port = exposePortEnty.getKey().split("/");
