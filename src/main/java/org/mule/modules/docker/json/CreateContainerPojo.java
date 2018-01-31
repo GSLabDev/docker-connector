@@ -23,6 +23,7 @@ import com.github.dockerjava.api.model.Volume;
  *
  */
 public class CreateContainerPojo {
+
     private static final Logger logger = LogManager.getLogger(CreateContainerPojo.class.getName());
 
     public CreateContainerPojo() {
@@ -52,7 +53,10 @@ public class CreateContainerPojo {
     private String workingDir;
     private boolean networkDisabled;
     private String macAddress;
+    @JsonProperty("ExposedPorts")
+    private Map<String, Object> exposedPortsMap = null;
     private List<ExposedPort> exposedPorts = null;
+
     private String stopSignal;
     @JsonProperty("HostConfig")
     private HostConfig hostConfig;
@@ -77,9 +81,9 @@ public class CreateContainerPojo {
         return exposedPorts;
     }
 
-    @JsonProperty("ExposedPorts")
-    public void setExposedPorts(Map<String, Object> exposedPortsMap) {
-        logger.info("setting exposed ports value" );
+    public void setExposedPortsMap(Map<String, Object> exposedPortsMap) {
+        logger.info("setting exposed ports value");
+        this.exposedPortsMap = exposedPortsMap;
         List<ExposedPort> exposedPortsList = new ArrayList<ExposedPort>();
         for (Entry<String, Object> exposePortEnty : exposedPortsMap.entrySet()) {
             String[] port = exposePortEnty.getKey().split("/");
@@ -90,6 +94,11 @@ public class CreateContainerPojo {
             }
         }
         this.exposedPorts = exposedPortsList;
+
+        logger.info("set expose port list to");
+        for (ExposedPort i : exposedPortsList) {
+            logger.info("port/protocol=" + i.getPort() + i.getProtocol());
+        }
     }
 
     public com.github.dockerjava.api.model.HostConfig getHostConfig() {
@@ -272,6 +281,7 @@ public class CreateContainerPojo {
     }
 
     static class NetworkingConfig {
+
         public NetworkingConfig() {
             // Default constructor used by jackson
         }
@@ -284,6 +294,7 @@ public class CreateContainerPojo {
     }
 
     static class EndpointsConfig {
+
         @JsonProperty("isolated_nw")
         private IsolatedNW isolatedNw;
 
@@ -293,6 +304,7 @@ public class CreateContainerPojo {
     }
 
     static class IsolatedNW {
+
         private List<String> aliases;
         @JsonProperty("IPAMConfig")
         private IPAMConfig ipAMConfig;
@@ -304,6 +316,7 @@ public class CreateContainerPojo {
     }
 
     static class IPAMConfig {
+
         @JsonProperty("IPv4Address")
         private String ipv4Address;
         @JsonProperty("IPv6Address")
