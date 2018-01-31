@@ -26,6 +26,8 @@ import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.github.dockerjava.api.model.ExposedPorts;
 
 /**
  * JsonParametersProcessor is used to process input JSON file. This class deserialize input JSON to POJO class and set docker CMD parameters. This class uses JsonNameStrategy while
@@ -82,6 +84,10 @@ public class JsonParametersProcessor {
         mapper.setPropertyNamingStrategy(new JsonNameStrategy());
         InputStream inputStream = new FileInputStream(filePath);
         Reader fileReader = new InputStreamReader(inputStream, "UTF-8");
+        SimpleModule simpleModule  = new SimpleModule();
+        simpleModule.addDeserializer(ExposedPorts.class, new ExposedPorts.Deserializer());
+        simpleModule.addKeySerializer(ExposedPorts.class, new ExposedPorts.Serializer());
+        mapper.registerModule(simpleModule);
         return mapper.readValue(fileReader, pojoClass);
     }
 
