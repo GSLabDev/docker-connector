@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
@@ -55,6 +56,7 @@ public class CreateContainerPojo {
     private String macAddress;
     @JsonProperty("ExposedPorts")
     private Map<String, Object> exposedPortsMap = null;
+    @JsonIgnore
     private List<ExposedPort> exposedPorts = null;
 
     private String stopSignal;
