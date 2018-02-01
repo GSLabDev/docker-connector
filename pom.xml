@@ -24,14 +24,13 @@
 		<dockerJavaClientVersion>3.0.11</dockerJavaClientVersion>
 		<powermock.version>1.7.1</powermock.version>
 		<junixsocketCommonVersion>2.0.2</junixsocketCommonVersion>
-		<jerseyApacheConnectorVersion>2.13</jerseyApacheConnectorVersion>
 		<apacheCommonsCompress.version>1.12</apacheCommonsCompress.version>
 		<powermockModuleJunit4.Version>1.7.3</powermockModuleJunit4.Version>
 		<mavenSurefirePlugin>2.20.1</mavenSurefirePlugin>
 		<jersey-client.version>2.26</jersey-client.version>
 		<javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
 		<glassfish-javax.inject.version>2.5.0-b60</glassfish-javax.inject.version>
-		<fasterxml-jackson.version>2.9.4</fasterxml-jackson.version>
+		<fasterxml-jackson.version>2.9.2</fasterxml-jackson.version>
 		<ctf.connector.class>org.mule.modules.docker.DockerConnector</ctf.connector.class>
 	</properties>
 
@@ -67,11 +66,6 @@
 			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.connectors</groupId>
-			<artifactId>jersey-apache-connector</artifactId>
-			<version>${jerseyApacheConnectorVersion}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.kohlschutter.junixsocket</groupId>
@@ -104,7 +98,6 @@
 			<artifactId>jersey-hk2</artifactId>
 			<version>${jersey-client.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.glassfish.hk2.external</groupId>
 			<artifactId>javax.inject</artifactId>
@@ -130,15 +123,29 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>${fasterxml-jackson.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<version>${fasterxml-jackson.version}</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-base</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
 	</dependencies>
+	
 	<build>
 		<plugins>
 
@@ -150,12 +157,16 @@
 					<!-- custom shade configuration -->
 					<artifactSet>
 						<includes>
+							<include>com.github.docker-java:docker-java</include>
 							<include>org.glassfish.jersey.core:jersey-client</include>
 							<include>org.glassfish.jersey.core:jersey-common</include>
+							<include>org.glassfish.jersey.connectors:jersey-apache-connector</include>
 							<include>com.fasterxml.jackson.core:jackson-databind</include>
 							<include>com.fasterxml.jackson.core:jackson-core</include>
 							<include>com.fasterxml.jackson.core:jackson-annotations</include>
 							<include>com.fasterxml.jackson.module:jackson-module-jaxb-annotations</include>
+							<include>com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider</include>
+							<include>com.fasterxml.jackson.jaxrs:jackson-jaxrs-base</include>
 						</includes>
 					</artifactSet>
 					<relocations>

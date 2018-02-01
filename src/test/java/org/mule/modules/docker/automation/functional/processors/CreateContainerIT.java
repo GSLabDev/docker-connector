@@ -5,22 +5,14 @@ package org.mule.modules.docker.automation.functional.processors;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Properties;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
-import org.mule.modules.docker.config.HttpDockerConfig;
-import org.mule.modules.docker.json.CreateContainerPojo;
-import org.mule.modules.docker.json.JsonParametersProcessor;
-import org.mule.tools.devkit.ctf.configuration.util.ConfigurationUtils;
 import org.mule.tools.devkit.ctf.exceptions.ConfigurationLoadingFailedException;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.BadRequestException;
@@ -47,7 +39,6 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
         try {
             getConnector().deleteContainer(createContainerResponse.getId(), true, false);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -62,34 +53,7 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
 
     @Test
     public void verifyWithJsonFile() throws ConfigurationLoadingFailedException {
-        Properties validCredentials = ConfigurationUtils.getAutomationCredentialsProperties();
-        ;
-        final HttpDockerConfig config = new HttpDockerConfig();
-        String dockerHost = validCredentials.getProperty("HTTP-Docker-Config.dockerHostIP");
-        String dockerPort = validCredentials.getProperty("HTTP-Docker-Config.dockerHostPort");
-        String dockerApiVersion = validCredentials.getProperty("HTTP-Docker-Config.apiVersion");
-        config.setDockerHostIP(dockerHost);
-        config.setDockerHostPort(dockerPort);
-        config.setApiVersion(dockerApiVersion);
-
-        DockerClient dockerclient = config.getDockerClient();
-        CreateContainerCmd createContainerCmd = dockerclient.createContainerCmd("");
-        JsonParametersProcessor.parseJsonParameters(TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH, createContainerCmd, CreateContainerPojo.class);
-
-        System.out.println("Docker create container command set to:" + createContainerCmd.toString());
-        try {
-            createContainerCmd.withName(createContainerCmd.getName() + "1");
-            CreateContainerResponse response = createContainerCmd.exec();
-            System.out.println("createContainerCmd.exec() response:" + response);
-        } catch (Exception e1) {
-            System.out.println("createContainerCmd.exec():" + e1.getMessage() + "\n" + e1);
-        }
-
-        try {
-            createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
-        } catch (Exception e) {
-            System.out.println("verifyWithJsonFile error:" + e.getMessage() + "\n" + e);
-        }
+        createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
         assertNotNull(createContainerResponse.getId());
         InspectContainerResponse inspectContainerResponse = getConnector().inspectContainer(createContainerResponse.getId(), true);
         assertNotNull(inspectContainerResponse.getId());
