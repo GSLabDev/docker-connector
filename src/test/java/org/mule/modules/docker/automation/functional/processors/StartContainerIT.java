@@ -55,7 +55,6 @@ public class StartContainerIT extends AbstractTestCase<DockerConnector> {
 
         assertNotNull(inspectContainerResponse.getImageId());
         assertNotNull(inspectContainerResponse.getState());
-        System.out.println("inspectContainerResponse.getState():" + inspectContainerResponse.getState());
         if (!inspectContainerResponse.getState().getRunning()) {
             assertEquals(inspectContainerResponse.getState().getExitCode(), 0);
         }
