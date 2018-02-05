@@ -482,16 +482,9 @@ TIP: For using streaming functionality of Docker connector proper *Processing St
 		"com.example.license": "GPL",
 		"com.example.version": "1.0"
 	},
-	"Volumes": {
-		"/volumes/data": {}
-	},
 	"WorkingDir": "/home",
 	"NetworkDisabled": false,
 	"MacAddress": "12:34:56:78:9a:bc",
-	"ExposedPorts": {
-		"22/tcp": {},
-		"8080/udp": {}
-	},
 	"StopSignal": "SIGTERM",
 	"HostConfig": {
 		"Binds": [
@@ -608,7 +601,7 @@ TIP: For using streaming functionality of Docker connector proper *Processing St
 }
 ----
 [NOTE]
-Above complete JSON is not mandatory, subset of these options can be provided as input. Options except Healthcheck are supported in the create container operation. + 
+Above complete JSON is not mandatory, subset of these options can be provided as input. Options except ExposedPorts, Volumes and Healthcheck are supported in the create container operation. + 
 For more information refer link:https://docs.docker.com/engine/api/v1.24/#3-endpoints[Docker create container API]. + 
  
 Example JSON:
@@ -661,5 +654,5 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 
 == Resources
 
-* Access the link:docker-connector-release-notes.adoc[Docker Connector Release Notes].
+* Access the link:release-notes.adoc[Docker Connector Release Notes].
 * Access the link:docker-apidoc.html[Docker API docs].
