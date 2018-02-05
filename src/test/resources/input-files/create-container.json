@@ -23,25 +23,9 @@
 		"com.example.license": "GPL",
 		"com.example.version": "1.0"
 	},
-	"Volumes": {
-		"/volumes/data": {
-			
-		},
-		"/volume/data1": {
-			
-		}
-	},
 	"WorkingDir": "/home",
 	"NetworkDisabled": false,
 	"MacAddress": "12:34:56:78:9a:bc",
-	"ExposedPorts": {
-		"22/tcp": {
-			
-		},
-		"8080/udp": {
-			
-		}
-	},
 	"StopSignal": "SIGTERM",
 	"HostConfig": {
 		"Binds": [

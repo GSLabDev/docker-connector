@@ -7,16 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
-import com.github.dockerjava.api.model.Volume;
 
 /**
  * 
@@ -24,8 +17,6 @@ import com.github.dockerjava.api.model.Volume;
  *
  */
 public class CreateContainerPojo {
-
-    private static final Logger logger = LogManager.getLogger(CreateContainerPojo.class.getName());
 
     public CreateContainerPojo() {
         // Default constructor used by jackson
@@ -50,58 +41,15 @@ public class CreateContainerPojo {
     private List<String> entrypoint;
     private String image;
     private Map<String, String> labels = null;
-    private List<Volume> volumes = null;
     private String workingDir;
     private boolean networkDisabled;
     private String macAddress;
-    @JsonProperty("ExposedPorts")
-    private Map<String, Object> exposedPortsMap = null;
-    @JsonIgnore
-    private List<ExposedPort> exposedPorts = null;
-
     private String stopSignal;
     @JsonProperty("HostConfig")
     private HostConfig hostConfig;
     private String ipv4Address;
     private String ipv6Address;
     private List<String> aliases;
-
-    public List<Volume> getVolumes() {
-        return volumes;
-    }
-
-    @JsonProperty("Volumes")
-    public void setVolumes(Map<String, Object> volumes) {
-        List<Volume> volumeList = new ArrayList<Volume>();
-        for (Entry<String, Object> volumesEntry : volumes.entrySet()) {
-            volumeList.add(new Volume(volumesEntry.getKey()));
-        }
-        this.volumes = volumeList;
-    }
-
-    public List<ExposedPort> getExposedPorts() {
-        return exposedPorts;
-    }
-
-    public void setExposedPortsMap(Map<String, Object> exposedPortsMap) {
-        logger.info("setting exposed ports value");
-        this.exposedPortsMap = exposedPortsMap;
-        List<ExposedPort> exposedPortsList = new ArrayList<ExposedPort>();
-        for (Entry<String, Object> exposePortEnty : exposedPortsMap.entrySet()) {
-            String[] port = exposePortEnty.getKey().split("/");
-            if (port[1].equals("tcp")) {
-                exposedPortsList.add(ExposedPort.tcp(Integer.parseInt(port[0])));
-            } else if (port[1].equals("udp")) {
-                exposedPortsList.add(ExposedPort.udp(Integer.parseInt(port[0])));
-            }
-        }
-        this.exposedPorts = exposedPortsList;
-
-        logger.info("set expose port list to");
-        for (ExposedPort i : exposedPortsList) {
-            logger.info("port/protocol=" + i.getPort() + i.getProtocol());
-        }
-    }
 
     public com.github.dockerjava.api.model.HostConfig getHostConfig() {
         return hostConfig;
