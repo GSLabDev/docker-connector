@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mule.api.callback.SourceCallback;
+import org.mule.modules.docker.SourceCallBack;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -51,7 +52,6 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Frame;
 import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.core.async.ResultCallbackTemplate;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
@@ -213,7 +213,6 @@ public class DockerConnectorAbstractTestCase {
         Mockito.when(mockPushImgCmd.exec(Mockito.any(PushImageResultCallback.class))).thenReturn(pushImageCallback);
         Mockito.doNothing().doThrow(new NotFoundException("Image not found !")).when(pushImageCallback).awaitSuccess();
         Mockito.when(mockPushImgCmd.exec(pushImageCallback)).thenReturn(pushImageCallback);
-        Mockito.when(mockPushImgCmd.exec(pushImageCallback)).thenReturn(pushImageCallback);
 
         // Remove Image
 
@@ -332,32 +331,16 @@ public class DockerConnectorAbstractTestCase {
         Mockito.when(mockLogContainerCmd.withTail(Mockito.anyInt())).thenReturn(mockLogContainerCmd);
         Mockito.when(mockLogContainerCmd.withFollowStream(Mockito.anyBoolean())).thenReturn(mockLogContainerCmd);
         Mockito.when(mockSourceCallback.process()).thenReturn(response);
+        Mockito.when(mockSourceCallback.process(ArgumentMatchers.any())).thenReturn(response);
         Mockito.when(mockLogContainerCmd.exec(ArgumentMatchers.<SourceCallBack<Frame>>any())).thenReturn(mockSourceCallbackFrame);
 
         // get statistics of container
         mockStatsCmd = Mockito.mock(StatsCmd.class);
+        mockSourceCallBackStats = (SourceCallBack<Statistics>) Mockito.mock(SourceCallBack.class);
         Mockito.when(mockDockerClient.statsCmd(Mockito.anyString())).thenReturn(mockStatsCmd);
         Mockito.when(mockStatsCmd.withContainerId(Mockito.anyString())).thenReturn(mockStatsCmd);
-        mockSourceCallBackStats = new SourceCallBack<Statistics>(mockSourceCallback);
         Mockito.when(mockStatsCmd.exec(ArgumentMatchers.<SourceCallBack<Statistics>>any())).thenReturn(mockSourceCallBackStats);
-    }
-
-    private class SourceCallBack<T> extends ResultCallbackTemplate<SourceCallBack<T>, T> {
-
-        private final SourceCallback callback;
-
-        SourceCallBack(SourceCallback sourceCallback) {
-            this.callback = sourceCallback;
-        }
-
-        @Override
-        public void onNext(T t) {
-
-            try {
-                this.callback.process(t);
-            } catch (Exception e) {
-            }
-
-        }
+        Mockito.doNothing().doThrow(new IOException()).when(mockSourceCallBackStats).close();
+        Mockito.when(mockSourceCallBackStats.awaitCompletion()).thenReturn(mockSourceCallBackStats);
     }
 }

@@ -6,6 +6,8 @@ package org.mule.modules.docker.automation.unit;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -122,15 +124,14 @@ public class ContainerOperationTest extends DockerConnectorAbstractTestCase {
         Mockito.verify(mockDockerClient).inspectContainerCmd(TestsConstants.INSPECT_CONTAINER);
         Mockito.verify(mockInspectContainerCmd).exec();
     }
-
     @Test
-    public void testGetContainerStatistics() {
+    public void testGetContainerStatistics() throws InterruptedException, IOException {
         dockerContainerOperations.getContainerStatsImpl(mockSourceCallback, TestsConstants.GET_CONTAINER_STATS);
         Mockito.verify(mockDockerClient).statsCmd(TestsConstants.GET_CONTAINER_STATS);
     }
 
     @Test
-    public void testGetContainerLogs() {
+    public void testGetContainerLogs() throws IOException {
         dockerContainerOperations.getContainerLogsImpl(mockSourceCallback, TestsConstants.GET_CONTAINER_LOG, TestsConstants.GET_CONTAINER_LOG_SHOW_TIME_STAMP,
                 TestsConstants.GET_CONTAINER_LOG_STANDARD_OUT, TestsConstants.GET_CONTAINER_LOG_STANDARD_ERROR, TestsConstants.GET_CONTAINER_LOG_SHOW_SINCE,
                 TestsConstants.GET_CONTAINER_LOG_TAIL, TestsConstants.GET_CONTAINER_LOG_FOLLOW_LOGS);
@@ -140,7 +141,7 @@ public class ContainerOperationTest extends DockerConnectorAbstractTestCase {
     }
 
     @Test
-    public void testGetContainerLogsWithoutTail() {
+    public void testGetContainerLogsWithoutTail() throws IOException {
         dockerContainerOperations.getContainerLogsImpl(mockSourceCallback, TestsConstants.GET_CONTAINER_LOG, TestsConstants.GET_CONTAINER_LOG_SHOW_TIME_STAMP,
                 TestsConstants.GET_CONTAINER_LOG_STANDARD_OUT, TestsConstants.GET_CONTAINER_LOG_STANDARD_ERROR, TestsConstants.GET_CONTAINER_LOG_SHOW_SINCE, 0,
                 TestsConstants.GET_CONTAINER_LOG_FOLLOW_LOGS);
