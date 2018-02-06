@@ -35,7 +35,6 @@ public class TagImageIT extends AbstractTestCase<DockerConnector> {
     public void verifyImageTag() {
         getConnector().tagImage(TestsConstants.TAG_IMAGE_NAME, TestsConstants.TAG_IMAGE_TAG, TestsConstants.TAG_IMAGE_DEST_IMAGE_NAME, TestsConstants.TAG_IMAGE_REPOSITORY,
                 TestsConstants.TAG_IMAGE_DEST_IMAGE_TAG);
-        System.out.println(getConnector().listImage(true, false, null, null));
         assertTrue(getConnector().listImage(true, false, null, null).toString().contains(TestsConstants.TAG_IMAGE_DEST_IMAGE_NAME));
         getConnector().removeImage(TestsConstants.TAG_IMAGE_REPOSITORY + "/" + TestsConstants.TAG_IMAGE_DEST_IMAGE_NAME, TestsConstants.TAG_IMAGE_DEST_IMAGE_TAG, true, false,
                 null);
