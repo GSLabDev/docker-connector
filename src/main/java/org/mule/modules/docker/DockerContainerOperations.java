@@ -3,6 +3,7 @@
  */
 package org.mule.modules.docker;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,10 +17,10 @@ import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.ListContainersCmd;
+import com.github.dockerjava.api.command.LogContainerCmd;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Frame;
 import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.core.async.ResultCallbackTemplate;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
 
 /**
@@ -228,23 +229,21 @@ public class DockerContainerOperations {
      *            Show standard error logs
      * @param showSince
      *            Show logs since timestamp or relative Minutes
+     * @throws IOException
+     *            throws IOException
      * 
      */
     public void getContainerLogsImpl(final SourceCallback sourceCallback, final String containerName,
             final boolean showTimeStamp, final boolean standardOut, final boolean standardError, final int showSince,
-            final int tail, final boolean followStream) {
+            final int tail, final boolean followStream) throws IOException {
+        LogContainerCmd logContainerCmd =  dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
+        .withStdErr(standardError).withSince(showSince).withFollowStream(followStream);
         logger.info("Getting container logs");
         if (tail != 0) {
             logger.debug("Container logs with tail : " + tail);
-            dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
-                    .withStdErr(standardError).withSince(showSince).withTail(tail).withFollowStream(followStream)
-                    .exec(new SourceCallBack<Frame>(sourceCallback));
-        } else {
-            dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
-                    .withStdErr(standardError).withSince(showSince).withFollowStream(followStream)
-                    .exec(new SourceCallBack<Frame>(sourceCallback));
+            logContainerCmd.withTail(tail);
         }
-
+        logContainerCmd.exec(new SourceCallBack<Frame>(sourceCallback)).close();
     }
 
     /**
@@ -256,11 +255,17 @@ public class DockerContainerOperations {
      * @param sourceCallback
      *            Parameter to process the callback which represents the next
      *            message processor in the chain.
+     * @throws InterruptedException
+     *            throws InterruptedException
+     * @throws IOException 
+     *            throws IOException
      * 
      */
-    public void getContainerStatsImpl(final SourceCallback sourceCallback, final String containerName) {
+    public void getContainerStatsImpl(final SourceCallback sourceCallback, final String containerName) throws InterruptedException, IOException  {
         logger.info("Getting Statistics of Container : " + containerName);
-        dockerClient.statsCmd(containerName).exec(new SourceCallBack<Statistics>(sourceCallback));
+        SourceCallBack<Statistics> statsCallback = dockerClient.statsCmd(containerName).exec(new SourceCallBack<Statistics>(sourceCallback));
+        statsCallback.awaitCompletion();
+        statsCallback.close();
     }
 
     /**
@@ -351,26 +356,6 @@ public class DockerContainerOperations {
         logger.info("Waiting for container " + containerName);
         final int exitCode = dockerClient.waitContainerCmd(containerName).exec(waitCallback).awaitStatusCode();
         logger.info("Cotainer exit code is " + exitCode);
-    }
-
-    private class SourceCallBack<T> extends ResultCallbackTemplate<SourceCallBack<T>, T> {
-
-        private final SourceCallback callback;
-
-        SourceCallBack(SourceCallback sourceCallback) {
-            this.callback = sourceCallback;
-        }
-
-        @Override
-        public void onNext(T t) {
-
-            try {
-                this.callback.process(t);
-            } catch (Exception e) {
-                logger.error(e);
-            }
-
-        }
     }
 
 }
