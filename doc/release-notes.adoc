@@ -10,7 +10,7 @@ link:user-manual.adoc[Docker Connector User Guide]
 
 == Docker Connector V1.0.0 - February 8, 2018
 
-=== Version V1.0 Compatibility
+=== Version V1.0.0 Compatibility
 
 [width="100%", cols=",", options="header"]
 |===
