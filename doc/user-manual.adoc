@@ -71,36 +71,16 @@ After you download and install the connector, use the following steps to make th
 For Maven dependency management, include this XML snippet in your `pom.xml` file.
 
 ----
-	<properties>
-		<category>Community</category>
-		<licensePath>LICENSE.md</licensePath>
-		<devkit.studio.package.skip>false</devkit.studio.package.skip>
-		<dockerJavaClientVersion>3.0.11</dockerJavaClientVersion>
-		<junixsocketCommonVersion>2.0.2</junixsocketCommonVersion>
-		<commonsCompress>1.5</commonsCompress>
-		<jerseyApacheConnectorVersion>2.13</jerseyApacheConnectorVersion>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>com.github.docker-java</groupId>
-			<artifactId>docker-java</artifactId>
-			<version>${dockerJavaClientVersion}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.jersey.connectors</groupId>
-			<artifactId>jersey-apache-connector</artifactId>
-			<version>${jerseyApacheConnectorVersion}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.kohlschutter.junixsocket</groupId>
-			<artifactId>junixsocket-common</artifactId>
-			<version>${junixsocketCommonVersion}</version>
-		</dependency>		
-	</dependencies>
+<dependency>
+    <groupId>org.mule.modules</groupId>
+    <artifactId>docker-connector</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ----
+
+[TIP]
+Inside the `<version>` tags, put the desired version number, the word `RELEASE` for the latest release, or `SNAPSHOT` for the latest available version. The available versions are: + 
+ *1.0.0*
 
 [[configure]]
 == How to Configure

@@ -8,7 +8,7 @@ Read through this user guide to understand how to set up and configure a basic f
 
 link:user-manual.adoc[Docker Connector User Guide]
 
-== Docker connector V1.0 - December 18, 2017
+== Docker Connector V1.0.0 - February 8, 2018
 
 === Version V1.0 Compatibility
 
