@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.modules.docker.DockerConnector;
 import org.mule.modules.docker.automation.util.TestsConstants;
@@ -51,7 +52,7 @@ public class CreateContainerIT extends AbstractTestCase<DockerConnector> {
         assertNotNull(inspectContainerResponse.getId());
     }
 
-    @Test
+    @Ignore @Test 
     public void verifyWithJsonFile() throws ConfigurationLoadingFailedException {
         createContainerResponse = getConnector().createContainer(null, null, null, TestsConstants.CREATE_CONTAINERS_JSON_FILE_PATH);
         assertNotNull(createContainerResponse.getId());
