@@ -231,11 +231,13 @@ public class DockerContainerOperations {
      *            Show logs since timestamp or relative Minutes
      * @throws IOException
      *            throws IOException
+     * @throws InterruptedException 
+     *            throws InterruptedException 
      * 
      */
     public void getContainerLogsImpl(final SourceCallback sourceCallback, final String containerName,
             final boolean showTimeStamp, final boolean standardOut, final boolean standardError, final int showSince,
-            final int tail, final boolean followStream) throws IOException {
+            final int tail, final boolean followStream) throws IOException, InterruptedException {
         LogContainerCmd logContainerCmd =  dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
         .withStdErr(standardError).withSince(showSince).withFollowStream(followStream);
         logger.info("Getting container logs");
@@ -243,7 +245,9 @@ public class DockerContainerOperations {
             logger.debug("Container logs with tail : " + tail);
             logContainerCmd.withTail(tail);
         }
-        logContainerCmd.exec(new SourceCallBack<Frame>(sourceCallback)).close();
+        SourceCallBack<Frame> logsCallback = logContainerCmd.exec(new SourceCallBack<Frame>(sourceCallback));
+        logsCallback.awaitCompletion();
+        logsCallback.close();
     }
 
     /**

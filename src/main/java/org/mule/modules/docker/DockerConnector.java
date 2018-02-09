@@ -186,6 +186,8 @@ public class DockerConnector {
      *            Show logs since timestamp or relative Minutes
      * @throws IOException
      *            throws IOException 
+     * @throws InterruptedException
+     *            throws InterruptedException 
      * 
      */
 
@@ -194,7 +196,7 @@ public class DockerConnector {
             @Default("false") boolean showTimeStamp,
             @Placement(group = "Stream Type") @Default("false") boolean standardOut,
             @Default("false") @Placement(group = "Stream Type") boolean standardError, @Default("10") int showSince,
-            @Default("0") int tail, @Default("false") boolean followStream) throws IOException {
+            @Default("0") int tail, @Default("false") boolean followStream) throws IOException, InterruptedException {
 
         dockerContOperation.getContainerLogsImpl(sourceCallback, containerName, showTimeStamp, standardOut,
                 standardError, showSince, tail, followStream);
