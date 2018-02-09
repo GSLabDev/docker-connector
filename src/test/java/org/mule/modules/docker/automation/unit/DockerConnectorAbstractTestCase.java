@@ -320,7 +320,7 @@ public class DockerConnectorAbstractTestCase {
         // Log container
         Object response = new String("Source call back response");
         mockSourceCallback = Mockito.mock(SourceCallback.class);
-        mockSourceCallbackFrame = new SourceCallBack<Frame>(mockSourceCallback);
+        mockSourceCallbackFrame = (SourceCallBack<Frame>)Mockito.mock(SourceCallBack.class);
         mockLogContainerCmd = Mockito.mock(LogContainerCmd.class);
         Mockito.when(mockDockerClient.logContainerCmd(Mockito.anyString())).thenReturn(mockLogContainerCmd);
         Mockito.when(mockLogContainerCmd.withContainerId(Mockito.anyString())).thenReturn(mockLogContainerCmd);
@@ -333,6 +333,8 @@ public class DockerConnectorAbstractTestCase {
         Mockito.when(mockSourceCallback.process()).thenReturn(response);
         Mockito.when(mockSourceCallback.process(ArgumentMatchers.any())).thenReturn(response);
         Mockito.when(mockLogContainerCmd.exec(ArgumentMatchers.<SourceCallBack<Frame>>any())).thenReturn(mockSourceCallbackFrame);
+        Mockito.doNothing().doThrow(new IOException()).when(mockSourceCallbackFrame).close();
+        Mockito.when(mockSourceCallbackFrame.awaitCompletion()).thenReturn(mockSourceCallbackFrame);
 
         // get statistics of container
         mockStatsCmd = Mockito.mock(StatsCmd.class);

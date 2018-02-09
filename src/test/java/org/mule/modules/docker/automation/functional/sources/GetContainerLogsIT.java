@@ -21,7 +21,6 @@ public class GetContainerLogsIT extends AbstractTestCase<DockerConnector> {
     public GetContainerLogsIT() {
         super(DockerConnector.class);
     }
-
     int pollingPeriod = 5000;
     public static final List<String> GET_CONTAINER_LOG_COMMAND = Collections.unmodifiableList(Arrays.asList(new String[] {
         "ping",
@@ -58,6 +57,7 @@ public class GetContainerLogsIT extends AbstractTestCase<DockerConnector> {
         // Wait till dispatcher collect logs
         Thread.sleep(pollingPeriod * 5);
         List<Object> events = getDispatcher().getSourceMessages("getContainerLogs");
+        System.out.println("Container Logs Source Messages:" + events);
         assertTrue(events.toString().contains("127.0.0.1"));
 
     }

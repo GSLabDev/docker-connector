@@ -131,7 +131,7 @@ public class ContainerOperationTest extends DockerConnectorAbstractTestCase {
     }
 
     @Test
-    public void testGetContainerLogs() throws IOException {
+    public void testGetContainerLogs() throws IOException, InterruptedException {
         dockerContainerOperations.getContainerLogsImpl(mockSourceCallback, TestsConstants.GET_CONTAINER_LOG, TestsConstants.GET_CONTAINER_LOG_SHOW_TIME_STAMP,
                 TestsConstants.GET_CONTAINER_LOG_STANDARD_OUT, TestsConstants.GET_CONTAINER_LOG_STANDARD_ERROR, TestsConstants.GET_CONTAINER_LOG_SHOW_SINCE,
                 TestsConstants.GET_CONTAINER_LOG_TAIL, TestsConstants.GET_CONTAINER_LOG_FOLLOW_LOGS);
@@ -141,7 +141,7 @@ public class ContainerOperationTest extends DockerConnectorAbstractTestCase {
     }
 
     @Test
-    public void testGetContainerLogsWithoutTail() throws IOException {
+    public void testGetContainerLogsWithoutTail() throws IOException, InterruptedException {
         dockerContainerOperations.getContainerLogsImpl(mockSourceCallback, TestsConstants.GET_CONTAINER_LOG, TestsConstants.GET_CONTAINER_LOG_SHOW_TIME_STAMP,
                 TestsConstants.GET_CONTAINER_LOG_STANDARD_OUT, TestsConstants.GET_CONTAINER_LOG_STANDARD_ERROR, TestsConstants.GET_CONTAINER_LOG_SHOW_SINCE, 0,
                 TestsConstants.GET_CONTAINER_LOG_FOLLOW_LOGS);
