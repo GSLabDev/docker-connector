@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ */
 package org.mule.modules.docker.automation.unit;
 
 import java.io.File;
@@ -12,6 +15,7 @@ import org.junit.Before;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mule.api.callback.SourceCallback;
+import org.mule.modules.docker.SourceCallBack;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -48,7 +52,6 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.AuthConfig;
 import com.github.dockerjava.api.model.Frame;
 import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.core.async.ResultCallbackTemplate;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
@@ -210,7 +213,6 @@ public class DockerConnectorAbstractTestCase {
         Mockito.when(mockPushImgCmd.exec(Mockito.any(PushImageResultCallback.class))).thenReturn(pushImageCallback);
         Mockito.doNothing().doThrow(new NotFoundException("Image not found !")).when(pushImageCallback).awaitSuccess();
         Mockito.when(mockPushImgCmd.exec(pushImageCallback)).thenReturn(pushImageCallback);
-        Mockito.when(mockPushImgCmd.exec(pushImageCallback)).thenReturn(pushImageCallback);
 
         // Remove Image
 
@@ -318,7 +320,7 @@ public class DockerConnectorAbstractTestCase {
         // Log container
         Object response = new String("Source call back response");
         mockSourceCallback = Mockito.mock(SourceCallback.class);
-        mockSourceCallbackFrame = new SourceCallBack<Frame>(mockSourceCallback);
+        mockSourceCallbackFrame = (SourceCallBack<Frame>)Mockito.mock(SourceCallBack.class);
         mockLogContainerCmd = Mockito.mock(LogContainerCmd.class);
         Mockito.when(mockDockerClient.logContainerCmd(Mockito.anyString())).thenReturn(mockLogContainerCmd);
         Mockito.when(mockLogContainerCmd.withContainerId(Mockito.anyString())).thenReturn(mockLogContainerCmd);
@@ -329,32 +331,18 @@ public class DockerConnectorAbstractTestCase {
         Mockito.when(mockLogContainerCmd.withTail(Mockito.anyInt())).thenReturn(mockLogContainerCmd);
         Mockito.when(mockLogContainerCmd.withFollowStream(Mockito.anyBoolean())).thenReturn(mockLogContainerCmd);
         Mockito.when(mockSourceCallback.process()).thenReturn(response);
+        Mockito.when(mockSourceCallback.process(ArgumentMatchers.any())).thenReturn(response);
         Mockito.when(mockLogContainerCmd.exec(ArgumentMatchers.<SourceCallBack<Frame>>any())).thenReturn(mockSourceCallbackFrame);
+        Mockito.doNothing().doThrow(new IOException()).when(mockSourceCallbackFrame).close();
+        Mockito.when(mockSourceCallbackFrame.awaitCompletion()).thenReturn(mockSourceCallbackFrame);
 
         // get statistics of container
         mockStatsCmd = Mockito.mock(StatsCmd.class);
+        mockSourceCallBackStats = (SourceCallBack<Statistics>) Mockito.mock(SourceCallBack.class);
         Mockito.when(mockDockerClient.statsCmd(Mockito.anyString())).thenReturn(mockStatsCmd);
         Mockito.when(mockStatsCmd.withContainerId(Mockito.anyString())).thenReturn(mockStatsCmd);
-        mockSourceCallBackStats = new SourceCallBack<Statistics>(mockSourceCallback);
         Mockito.when(mockStatsCmd.exec(ArgumentMatchers.<SourceCallBack<Statistics>>any())).thenReturn(mockSourceCallBackStats);
-    }
-
-    private class SourceCallBack<T> extends ResultCallbackTemplate<SourceCallBack<T>, T> {
-
-        private final SourceCallback callback;
-
-        SourceCallBack(SourceCallback sourceCallback) {
-            this.callback = sourceCallback;
-        }
-
-        @Override
-        public void onNext(T t) {
-
-            try {
-                this.callback.process(t);
-            } catch (Exception e) {
-            }
-
-        }
+        Mockito.doNothing().doThrow(new IOException()).when(mockSourceCallBackStats).close();
+        Mockito.when(mockSourceCallBackStats.awaitCompletion()).thenReturn(mockSourceCallBackStats);
     }
 }

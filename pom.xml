@@ -13,30 +13,38 @@
 
 	<parent>
 		<groupId>org.mule.tools.devkit</groupId>
-		<artifactId>mule-devkit-parent</artifactId>
+		<artifactId>certified-mule-connector-parent</artifactId>
 		<version>3.9.0</version>
 	</parent>
 
 	<properties>
-		<category>Community</category>
+		<category>Certified</category>
 		<licensePath>LICENSE.md</licensePath>
 		<devkit.studio.package.skip>false</devkit.studio.package.skip>
-		<dockerJavaClientVersion>3.0.11</dockerJavaClientVersion>
+		<ctf.connector.class>org.mule.modules.docker.DockerConnector</ctf.connector.class>
+		<docker-java.version>3.0.11</docker-java.version>
+		<jersey-client.version>2.26</jersey-client.version>
+		<glassfish-javax.inject.version>2.5.0-b60</glassfish-javax.inject.version>
+		<fasterxml-jackson.version>2.9.2</fasterxml-jackson.version>
+		<junixsocket-common.version>2.0.2</junixsocket-common.version>
+		<apache-commons-compress.version>1.12</apache-commons-compress.version>
+		<javax.ws.rs-api.version>2.1</javax.ws.rs-api.version>
 		<powermock.version>1.7.1</powermock.version>
-		<junixsocketCommonVersion>2.0.2</junixsocketCommonVersion>
-		<jerseyApacheConnectorVersion>2.13</jerseyApacheConnectorVersion>
+		<powermock-modulejunit4.version>1.7.3</powermock-modulejunit4.version>
+		<mavenSurefirePlugin>2.20.1</mavenSurefirePlugin>
+		<bouncycastle.version>1.54</bouncycastle.version>
 	</properties>
 
 	<distributionManagement>
 		<repository>
-			<id>mulesoft-releases</id>
-			<name>MuleSoft Repository</name>
-			<url>http://repository-master.mulesoft.org/releases/</url>
+			<id>mule-ee-releases</id>
+			<name>MuleEE Releases Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/</url>
 		</repository>
 		<snapshotRepository>
-			<id>mulesoft-snapshots</id>
-			<name>MuleSoft Snapshot Repository</name>
-			<url>http://repository-master.mulesoft.org/snapshots/</url>
+			<id>mule-ee-snapshots</id>
+			<name>MuleEE Snapshots Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/ci-snapshots/</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
@@ -45,8 +53,86 @@
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
 			<artifactId>docker-java</artifactId>
-			<version>${dockerJavaClientVersion}</version>
+			<version>${docker-java.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+			<version>${jersey-client.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.hk2.external</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${glassfish-javax.inject.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jaxb-annotations</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-base</artifactId>
+			<version>${fasterxml-jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kohlschutter.junixsocket</groupId>
+			<artifactId>junixsocket-common</artifactId>
+			<version>${junixsocket-common.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>${apache-commons-compress.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>${javax.ws.rs-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-ext-jdk15on</artifactId>
+			<version>${bouncycastle.version}</version>
+		</dependency>
+
+		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4-legacy</artifactId>
@@ -60,37 +146,70 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.glassfish.jersey.connectors</groupId>
-			<artifactId>jersey-apache-connector</artifactId>
-			<version>${jerseyApacheConnectorVersion}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.kohlschutter.junixsocket</groupId>
-			<artifactId>junixsocket-common</artifactId>
-			<version>${junixsocketCommonVersion}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
-			<version>1.7.3</version>
+			<version>${powermock-modulejunit4.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<!-- custom shade configuration -->
+					<artifactSet>
+						<includes>
+							<include>com.github.docker-java:docker-java</include>
+							<include>org.glassfish.jersey.core:jersey-client</include>
+							<include>org.glassfish.jersey.core:jersey-common</include>
+							<include>org.glassfish.jersey.connectors:jersey-apache-connector</include>
+							<include>com.fasterxml.jackson.core:jackson-databind</include>
+							<include>com.fasterxml.jackson.core:jackson-core</include>
+							<include>com.fasterxml.jackson.core:jackson-annotations</include>
+							<include>com.fasterxml.jackson.module:jackson-module-jaxb-annotations</include>
+							<include>com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider</include>
+							<include>com.fasterxml.jackson.jaxrs:jackson-jaxrs-base</include>
+						</includes>
+					</artifactSet>
+					<relocations>
+						<relocation>
+							<pattern>org.glassfish.jersey</pattern>
+							<shadedPattern>org.glassfish.jersey.shaded</shadedPattern>
+						</relocation>
+						<relocation>
+							<pattern>com.fasterxml.jackson</pattern>
+							<shadedPattern>com.fasterxml.jackson.shaded</shadedPattern>
+						</relocation>
+					</relocations>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.20.1</version>
+				<version>${mavenSurefirePlugin}</version>
 				<configuration>
-					<includes>
-						<include>UnitTestSuite.java</include>
-					</includes>
 					<excludes>
-						<exclude>FunctionalTestSuite.java</exclude>
+						<exclude>%regex[.*IT.java]</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.mule.certification</groupId>
+				<artifactId>project-structure-validation</artifactId>
+				<version>1.0.6</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>validate</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

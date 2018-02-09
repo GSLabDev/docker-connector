@@ -1,5 +1,5 @@
 /**
- * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
 package org.mule.modules.docker.json;
 
@@ -7,12 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
-import com.github.dockerjava.api.model.Volume;
 
 /**
  * 
@@ -20,6 +17,7 @@ import com.github.dockerjava.api.model.Volume;
  *
  */
 public class CreateContainerPojo {
+
     public CreateContainerPojo() {
         // Default constructor used by jackson
     }
@@ -43,47 +41,15 @@ public class CreateContainerPojo {
     private List<String> entrypoint;
     private String image;
     private Map<String, String> labels = null;
-    private List<Volume> volumes = null;
     private String workingDir;
     private boolean networkDisabled;
     private String macAddress;
-    private List<ExposedPort> exposedPorts = null;
     private String stopSignal;
     @JsonProperty("HostConfig")
     private HostConfig hostConfig;
     private String ipv4Address;
     private String ipv6Address;
     private List<String> aliases;
-
-    public List<Volume> getVolumes() {
-        return volumes;
-    }
-
-    @JsonProperty("Volumes")
-    public void setVolumes(Map<String, Object> volumes) {
-        List<Volume> volumeList = new ArrayList<Volume>();
-        for (Entry<String, Object> volumesEntry : volumes.entrySet()) {
-            volumeList.add(new Volume(volumesEntry.getKey()));
-        }
-        this.volumes = volumeList;
-    }
-
-    public List<ExposedPort> getExposedPorts() {
-        return exposedPorts;
-    }
-
-    public void setExposedPorts(Map<String, Object> exposedPortsMap) {
-        List<ExposedPort> exposedPortsList = new ArrayList<ExposedPort>();
-        for (Entry<String, Object> exposePortEnty : exposedPortsMap.entrySet()) {
-            String[] port = exposePortEnty.getKey().split("/");
-            if (port[1].equals("tcp")) {
-                exposedPortsList.add(ExposedPort.tcp(Integer.parseInt(port[0])));
-            } else if (port[1].equals("udp")) {
-                exposedPortsList.add(ExposedPort.udp(Integer.parseInt(port[0])));
-            }
-        }
-        this.exposedPorts = exposedPortsList;
-    }
 
     public com.github.dockerjava.api.model.HostConfig getHostConfig() {
         return hostConfig;
@@ -265,6 +231,7 @@ public class CreateContainerPojo {
     }
 
     static class NetworkingConfig {
+
         public NetworkingConfig() {
             // Default constructor used by jackson
         }
@@ -277,6 +244,7 @@ public class CreateContainerPojo {
     }
 
     static class EndpointsConfig {
+
         @JsonProperty("isolated_nw")
         private IsolatedNW isolatedNw;
 
@@ -286,6 +254,7 @@ public class CreateContainerPojo {
     }
 
     static class IsolatedNW {
+
         private List<String> aliases;
         @JsonProperty("IPAMConfig")
         private IPAMConfig ipAMConfig;
@@ -297,6 +266,7 @@ public class CreateContainerPojo {
     }
 
     static class IPAMConfig {
+
         @JsonProperty("IPv4Address")
         private String ipv4Address;
         @JsonProperty("IPv6Address")

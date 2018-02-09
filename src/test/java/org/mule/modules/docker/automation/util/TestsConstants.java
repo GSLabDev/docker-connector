@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ */
 package org.mule.modules.docker.automation.util;
 
 import java.util.Arrays;
@@ -69,7 +72,7 @@ public class TestsConstants {
     public static final boolean GET_CONTAINER_LOG_STANDARD_ERROR = true;
     public static final int GET_CONTAINER_LOG_SHOW_SINCE = 10;
     public static final int GET_CONTAINER_LOG_TAIL = 10;
-    public static final boolean GET_CONTAINER_LOG_FOLLOW_LOGS = true;
+    public static final boolean GET_CONTAINER_LOG_FOLLOW_LOGS = false;
 
     public static final String GET_CONTAINER_STATS = "get-container-stats-name";
 
@@ -116,10 +119,10 @@ public class TestsConstants {
 
     public static final String LIST_VOLUME_VOLUME_NAME = "volume1";
     public static final String LIST_VOLUME_VOLUMEDRIVER = "local";
-    public static final boolean LIST_VOLUME_DANGLING_FILTER = false;
+    public static final boolean LIST_VOLUME_DANGLING_FILTER = true;
     public static final Map<String, String> LIST_VOLUME_DRIVEROPTS = ImmutableMap.of("type", "tmpfs");
 
-    public static final String PULL_IMAGE_TESTIMAGE = "busybox";
+    public static final String PULL_IMAGE_TESTIMAGE = "cirros";
     public static final String PULL_IMAGE_IMAGETAG = "latest";
     public static final String PULL_IMAGE_USERNAME = null;
     public static final String PULL_IMAGE_PASSWORD = null;

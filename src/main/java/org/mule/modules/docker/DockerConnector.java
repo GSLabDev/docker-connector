@@ -1,9 +1,9 @@
 /**
- * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-
 package org.mule.modules.docker;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +18,7 @@ import org.mule.api.annotations.display.FriendlyName;
 import org.mule.api.annotations.display.Path;
 import org.mule.api.annotations.display.Placement;
 import org.mule.api.annotations.display.Summary;
+import org.mule.api.annotations.licensing.RequiresEnterpriseLicense;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.callback.SourceCallback;
@@ -45,6 +46,7 @@ import com.github.dockerjava.api.model.Info;
  * inbound as well as outbound connector from the mule flow.
  */
 
+@RequiresEnterpriseLicense ( allowEval = true )
 @Connector(name = "docker", friendlyName = "Docker", minMuleVersion = "3.8.5")
 public class DockerConnector {
     /**
@@ -182,6 +184,10 @@ public class DockerConnector {
      *            Show standard error logs
      * @param showSince
      *            Show logs since timestamp or relative Minutes
+     * @throws IOException
+     *            throws IOException 
+     * @throws InterruptedException
+     *            throws InterruptedException 
      * 
      */
 
@@ -190,7 +196,7 @@ public class DockerConnector {
             @Default("false") boolean showTimeStamp,
             @Placement(group = "Stream Type") @Default("false") boolean standardOut,
             @Default("false") @Placement(group = "Stream Type") boolean standardError, @Default("10") int showSince,
-            @Default("0") int tail, @Default("false") boolean followStream) {
+            @Default("0") int tail, @Default("false") boolean followStream) throws IOException, InterruptedException {
 
         dockerContOperation.getContainerLogsImpl(sourceCallback, containerName, showTimeStamp, standardOut,
                 standardError, showSince, tail, followStream);
@@ -205,10 +211,13 @@ public class DockerConnector {
      * @param sourceCallback
      *            Parameter to process the callback which represents the next
      *            message processor in the chain.
-     * 
+     * @throws IOException
+     *            throws IOException
+     * @throws InterruptedException 
+     *            throws InterruptedException 
      */
     @Source(sourceStrategy = SourceStrategy.POLLING, pollingPeriod = 5000)
-    public void getContainerStatistics(final SourceCallback sourceCallback, final String containerName) {
+    public void getContainerStatistics(final SourceCallback sourceCallback, final String containerName) throws InterruptedException, IOException {
         dockerContOperation.getContainerStatsImpl(sourceCallback, containerName);
     }
 

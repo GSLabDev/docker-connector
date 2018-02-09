@@ -1,9 +1,9 @@
 /**
- * (c) 2003-2016 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
+ * Copyright (c) 2003-2017, Great Software Laboratory Pvt. Ltd. The software in this package is published under the terms of the Commercial Free Software license V.1, a copy of which has been included with this distribution in the LICENSE.md file.
  */
-
 package org.mule.modules.docker;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,10 +17,10 @@ import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.command.ListContainersCmd;
+import com.github.dockerjava.api.command.LogContainerCmd;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Frame;
 import com.github.dockerjava.api.model.Statistics;
-import com.github.dockerjava.core.async.ResultCallbackTemplate;
 import com.github.dockerjava.core.command.WaitContainerResultCallback;
 
 /**
@@ -77,24 +77,24 @@ public class DockerContainerOperations {
 
         List<Container> containerList;
         logger.info("Getting container list from docker");
-        final ListContainersCmd listContainerResponse = dockerClient.listContainersCmd().withShowAll(showAll).withShowSize(showSize);
+        final ListContainersCmd listContainerResponse = dockerClient.listContainersCmd().withShowAll(showAll)
+                .withShowSize(showSize);
         if (before != null) {
-            logger.info("Before");
+            logger.info("Listing all containers before ", before);
             listContainerResponse.withBefore(before);
-            logger.info("before executed : " + before.getClass().getName());
         }
         if (limit != 0) {
-            logger.info("limit");
+            logger.info("Using limit value : ", limit);
             listContainerResponse.withLimit(limit);
             logger.info("limit executed");
         }
         if (status != null) {
-            logger.info("status value : " + status);
+            logger.info("Using status value : " + status);
             listContainerResponse.withStatusFilter(status);
             logger.info("status executed : " + status.getClass().getName());
         }
         if (labels != null) {
-            logger.info("Labels not empty : " + labels);
+            logger.info("Listing containers using label filter : " + labels);
             listContainerResponse.withLabelFilter(labels);
         }
         containerList = listContainerResponse.exec();
@@ -196,11 +196,16 @@ public class DockerContainerOperations {
     public CreateContainerResponse runContainerImpl(final String imageName, final String imageTag,
             final String containerName, final List<String> command) {
         logger.info("Creating and Starting container " + containerName);
-        CreateContainerResponse createContainerResponse = dockerClient.createContainerCmd(imageName + ":" + imageTag)
-                .withName(containerName).withCmd(command).exec();
+        CreateContainerCmd createContainerCommand = dockerClient.createContainerCmd(imageName + ":" + imageTag)
+                .withName(containerName);
+        if (command != null) {
+            createContainerCommand.withCmd(command);
+        }
+        CreateContainerResponse createContainerResponse = createContainerCommand.exec();
+
         logger.info("Create container response : " + createContainerResponse);
         dockerClient.startContainerCmd(containerName).exec();
-        logger.info(containerName + "is stared");
+        logger.info(containerName + " container is stared");
         return createContainerResponse;
     }
 
@@ -224,23 +229,25 @@ public class DockerContainerOperations {
      *            Show standard error logs
      * @param showSince
      *            Show logs since timestamp or relative Minutes
+     * @throws IOException
+     *            throws IOException
+     * @throws InterruptedException 
+     *            throws InterruptedException 
      * 
      */
     public void getContainerLogsImpl(final SourceCallback sourceCallback, final String containerName,
             final boolean showTimeStamp, final boolean standardOut, final boolean standardError, final int showSince,
-            final int tail, final boolean followStream) {
+            final int tail, final boolean followStream) throws IOException, InterruptedException {
+        LogContainerCmd logContainerCmd =  dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
+        .withStdErr(standardError).withSince(showSince).withFollowStream(followStream);
         logger.info("Getting container logs");
         if (tail != 0) {
             logger.debug("Container logs with tail : " + tail);
-            dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
-                    .withStdErr(standardError).withSince(showSince).withTail(tail).withFollowStream(followStream)
-                    .exec(new SourceCallBack<Frame>(sourceCallback));
-        } else {
-            dockerClient.logContainerCmd(containerName).withTimestamps(showTimeStamp).withStdOut(standardOut)
-                    .withStdErr(standardError).withSince(showSince).withFollowStream(followStream)
-                    .exec(new SourceCallBack<Frame>(sourceCallback));
+            logContainerCmd.withTail(tail);
         }
-
+        SourceCallBack<Frame> logsCallback = logContainerCmd.exec(new SourceCallBack<Frame>(sourceCallback));
+        logsCallback.awaitCompletion();
+        logsCallback.close();
     }
 
     /**
@@ -252,11 +259,17 @@ public class DockerContainerOperations {
      * @param sourceCallback
      *            Parameter to process the callback which represents the next
      *            message processor in the chain.
+     * @throws InterruptedException
+     *            throws InterruptedException
+     * @throws IOException 
+     *            throws IOException
      * 
      */
-    public void getContainerStatsImpl(final SourceCallback sourceCallback, final String containerName) {
+    public void getContainerStatsImpl(final SourceCallback sourceCallback, final String containerName) throws InterruptedException, IOException  {
         logger.info("Getting Statistics of Container : " + containerName);
-        dockerClient.statsCmd(containerName).exec(new SourceCallBack<Statistics>(sourceCallback));
+        SourceCallBack<Statistics> statsCallback = dockerClient.statsCmd(containerName).exec(new SourceCallBack<Statistics>(sourceCallback));
+        statsCallback.awaitCompletion();
+        statsCallback.close();
     }
 
     /**
@@ -293,7 +306,6 @@ public class DockerContainerOperations {
         logger.info("Killing Container " + containerName);
         dockerClient.killContainerCmd(containerName).withSignal(signal).exec();
         logger.info(containerName + " Container Killed with signal " + signal);
-
     }
 
     /**
@@ -348,26 +360,6 @@ public class DockerContainerOperations {
         logger.info("Waiting for container " + containerName);
         final int exitCode = dockerClient.waitContainerCmd(containerName).exec(waitCallback).awaitStatusCode();
         logger.info("Cotainer exit code is " + exitCode);
-    }
-
-    private class SourceCallBack<T> extends ResultCallbackTemplate<SourceCallBack<T>, T> {
-
-        private final SourceCallback callback;
-
-        SourceCallBack(SourceCallback sourceCallback) {
-            this.callback = sourceCallback;
-        }
-
-        @Override
-        public void onNext(T t) {
-
-            try {
-                this.callback.process(t);
-            } catch (Exception e) {
-                logger.error(e);
-            }
-
-        }
     }
 
 }

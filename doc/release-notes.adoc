@@ -1,15 +1,4 @@
-////
-The following is the approved connector release notes template for documenting MuleSoft Supported Connectors.
-////
-
 = Docker Connector Release Notes
-////
-Docker : The system the connector connects to, at the other end of the mule runtime, i.e. SalesForce, Workday Financials]
-////
-:keywords: add_keywords_separated_by_commas
-
-
-
 
 The Anypoint Connector for Docker lets you connect to the docker engine and docker registry. The connector exposes convenient methods for exploiting the capabilities of Docker.
 
@@ -17,14 +6,11 @@ The connector executes API calls targeting Docker’s REST API depending on you 
 
 Read through this user guide to understand how to set up and configure a basic flow using the connector. Track feature additions, compatibility, limitations, and API version updates using the Docker Connector Release Notes. Review the connector operations and see how they work by reviewing the Technical Reference alongside the Demo Applications.
 
-link:docker-connector-user-manual.adoc[Docker Connector User Guide]
-////
-Points to the docs.mulesoft pages for documentation on the functional aspects of the connector. e.g.: link:/mule-user-guide/v/3.7/microsoft-sharepoint-2013-connector[Microsoft SharePoint 2013 Connector]
-////
+link:user-manual.adoc[Docker Connector User Guide]
 
-== Docker connector V1.0 - December 18, 2017
+== Docker Connector V1.0.0 - February 8, 2018
 
-=== Version V1.0 Compatibility
+=== Version V1.0.0 Compatibility
 
 [width="100%", cols=",", options="header"]
 |===
@@ -36,7 +22,7 @@ Points to the docs.mulesoft pages for documentation on the functional aspects of
 === Features
 
 . TLS support with docker engine
-. Supports multiple APIs of docker like image  images, container, volumes, and statistics.
+. Supports multiple APIs of docker images, container and volumes:
 ** Docker Info
 ** Pull Image
 ** Create Container
@@ -63,15 +49,8 @@ Points to the docs.mulesoft pages for documentation on the functional aspects of
 ** Tag Image
 ** Push Image
 
-//Example of a Feature listing:
-
-//NTLM Authentication - NTLM authentication is now more robust and widely compatible with more domain controller configurations.
-
-
 === Support Resources
-////
-could also be named See Also
-////
-* Learn how to link:/mule-user-guide/v/3.7/installing-connectors[Install Anypoint Connectors] using Anypoint Exchange.
+
+* Learn how to link:https://docs.mulesoft.com/mule-user-guide/v/3.7/installing-connectors[Install Anypoint Connectors] using Anypoint Exchange.
 * Access MuleSoft’ link:http://forum.mulesoft.org/mulesoft[Forum] to pose questions and get help from Mule’s broad community of users.
 * To access MuleSoft’s expert support team, link:http://www.mulesoft.com/mule-esb-subscription[subscribe] to Mule ESB Enterprise and log in to MuleSoft’s link:http://www.mulesoft.com/support-login[Customer Portal].
